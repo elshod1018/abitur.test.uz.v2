@@ -64,7 +64,7 @@ public class NewsController {
             @ApiResponse(responseCode = "200", description = "News updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/update")
-    public ResponseEntity<ResponseDTO<News>> update(@RequestBody NewsUpdateDTO dto) {
+    public ResponseEntity<ResponseDTO<News>> update(NewsUpdateDTO dto) {
         News news = newsService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Updated Successfully"));
     }
@@ -72,8 +72,8 @@ public class NewsController {
     @Operation(summary = "This API is used for delete news", responses = {
             @ApiResponse(responseCode = "200", description = "News delete", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDTO<Void>> update(@Valid Integer id) {
+    @DeleteMapping("/delete/{id:.*}")
+    public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Integer id) {
         newsService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(null, "News Deleted Successfully"));
     }

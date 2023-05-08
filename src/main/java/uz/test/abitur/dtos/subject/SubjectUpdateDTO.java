@@ -1,7 +1,6 @@
-package uz.test.abitur.dtos.news;
+package uz.test.abitur.dtos.subject;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
 
@@ -11,11 +10,12 @@ import org.springdoc.core.annotations.ParameterObject;
 @AllArgsConstructor
 @NoArgsConstructor
 @ParameterObject
-public class NewsUpdateDTO {
+public class SubjectUpdateDTO {
     private Integer id;
 
-    private String title;
+    private String name;
 
-    private String body;
+    private String code;
 
+    private boolean mandatory;
 }

@@ -1,10 +1,15 @@
 package uz.test.abitur.mapper;
 
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 import uz.test.abitur.domains.AuthUser;
+import uz.test.abitur.domains.News;
 import uz.test.abitur.dtos.auth.UserCreateDTO;
+import uz.test.abitur.dtos.news.NewsUpdateDTO;
+import uz.test.abitur.dtos.user.UserUpdateDTO;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -13,4 +18,7 @@ public interface UserMapper {
     UserCreateDTO toDto(AuthUser user);
 
     AuthUser toEntity(UserCreateDTO dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE)
+    void updateNewsFromDTO(UserUpdateDTO dto, @MappingTarget AuthUser user);
 }

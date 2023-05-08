@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.test.abitur.dtos.AppErrorDTO;
 import uz.test.abitur.dtos.ResponseDTO;
+import uz.test.abitur.ex_handlers.exeptions.AlreadyExistException;
+import uz.test.abitur.ex_handlers.exeptions.NotFoundException;
 
 import java.util.*;
 
@@ -27,8 +29,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ResponseDTO<>(error));
     }
 
-   /* @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseDTO<Void>> handleRuntimeExceptions(RuntimeException e, HttpServletRequest request) {
+        AppErrorDTO error = new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400);
+        return ResponseEntity.badRequest().body(new ResponseDTO<>(error));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ResponseDTO<Void>> handleNotFoundExceptions(NotFoundException e, HttpServletRequest request) {
+        AppErrorDTO error = new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400);
+        return ResponseEntity.badRequest().body(new ResponseDTO<>(error));
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<ResponseDTO<Void>> handleAlreadyExistExceptions(AlreadyExistException e, HttpServletRequest request) {
         AppErrorDTO error = new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400);
         return ResponseEntity.badRequest().body(new ResponseDTO<>(error));
     }
@@ -76,5 +90,5 @@ public class GlobalExceptionHandler {
         String errorPath = request.getRequestURI();
         AppErrorDTO error = new AppErrorDTO(errorPath, errorMessage, errorBody, 400);
         return ResponseEntity.status(400).body(new ResponseDTO<>(error));
-    }*/
+    }
 }

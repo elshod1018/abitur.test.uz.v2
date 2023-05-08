@@ -12,4 +12,9 @@ public interface UrlUtils {
 
     /* News */
     String BASE_NEWS_URL=BASE_URL+"/news";
+    /* Users */
+    String BASE_USERS_URL=BASE_URL+"/users";
+
+    /* Subject */
+    String BASE_SUBJECTS_URL=BASE_URL+"/subjects";
 }

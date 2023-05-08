@@ -1,5 +1,6 @@
 package uz.test.abitur.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -15,7 +16,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
@@ -36,5 +36,6 @@ public class Auditable {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     private boolean deleted;
 }

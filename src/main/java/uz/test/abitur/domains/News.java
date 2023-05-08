@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ToString(callSuper = true)
 public class News extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

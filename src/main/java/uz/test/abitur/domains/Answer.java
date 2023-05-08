@@ -28,5 +28,4 @@ public class Answer {
 
     @Builder.Default
     private Boolean isTrue = false;
-
 }

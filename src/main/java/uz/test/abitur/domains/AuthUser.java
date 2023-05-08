@@ -1,5 +1,6 @@
 package uz.test.abitur.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,7 @@ public class AuthUser extends Auditable {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

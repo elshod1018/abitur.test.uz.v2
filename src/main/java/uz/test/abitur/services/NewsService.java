@@ -1,6 +1,8 @@
 package uz.test.abitur.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
@@ -10,6 +12,8 @@ import uz.test.abitur.dtos.news.NewsCreateDTO;
 import uz.test.abitur.dtos.news.NewsUpdateDTO;
 import uz.test.abitur.ex_handlers.exeptions.NotFoundException;
 import uz.test.abitur.repositories.NewsRepository;
+
+import java.util.List;
 
 import static uz.test.abitur.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -39,5 +43,9 @@ public class NewsService {
         News news = findById(id);
         news.setDeleted(true);
         newsRepository.save(news);
+    }
+
+    public Page<News> getAll(Pageable pageable) {
+        return newsRepository.getAll(pageable);
     }
 }

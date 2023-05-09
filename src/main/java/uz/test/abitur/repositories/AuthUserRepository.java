@@ -29,4 +29,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
 
     @Query("select a from AuthUser a where a.deleted = false")
     Page<AuthUser> getAll(Pageable pageable);
+
+    @Query("select a from AuthUser a where a.deleted = false and a.status = ?1")
+    Page<AuthUser> getAllByStatus(Status status, Pageable pageable);
 }

@@ -119,7 +119,10 @@ public class AuthUserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public Page<AuthUser> getAll(Pageable pageable) {
+    public Page<AuthUser> getAll(Status status, Pageable pageable) {
+        if (status != null) {
+            return authUserRepository.getAllByStatus(status, pageable);
+        }
         return authUserRepository.getAll(pageable);
     }
 

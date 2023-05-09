@@ -55,11 +55,12 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Users returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/all")
-    public ResponseEntity<ResponseDTO<Page<AuthUser>>> getAll(@RequestParam(required = false, defaultValue = "15") Integer size,
+    public ResponseEntity<ResponseDTO<Page<AuthUser>>> getAll(@RequestParam(required = false) Status status,
+                                                              @RequestParam(required = false, defaultValue = "15") Integer size,
                                                               @RequestParam(required = false, defaultValue = "0") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<AuthUser> usersList = authUserService.getAll(pageable);
+        Page<AuthUser> usersList = authUserService.getAll(status, pageable);
         return ResponseEntity.ok(new ResponseDTO<>(usersList));
     }
 
@@ -78,7 +79,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/profile/update")
     public ResponseEntity<ResponseDTO<AuthUser>> updateProfile(@RequestBody UserProfileUpdateDTO dto, MultipartFile file) throws IOException {
-        AuthUser user = authUserService.updateProfile(dto,file);
+        AuthUser user = authUserService.updateProfile(dto, file);
         return ResponseEntity.ok(new ResponseDTO<>(user, "User Updated Successfully"));
     }
 

@@ -55,7 +55,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/abitur
     username: postgres
-    password: 123
+    password: 1234
     driverClassName: org.postgresql.Driver
 firebase:
   type: service_account

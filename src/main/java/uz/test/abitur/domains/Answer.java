@@ -20,9 +20,6 @@ public class Answer {
     @UuidGenerator
     private String id;
 
-    @Column(nullable = false,updatable = false)
-    private String questionId;
-
     @Column(nullable = false)
     private String text;
 

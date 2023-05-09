@@ -1,20 +1,17 @@
 package uz.test.abitur.domains;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Question extends Auditable {
@@ -28,11 +25,15 @@ public class Question extends Auditable {
     @Column(nullable = false)
     private String text;
 
+    @OneToMany
+    private List<Answer> answers;
+
     @Builder(builderMethodName = "childBuilder")
-    public Question(String createdBy, String updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted, String id, Subject subject, String text) {
+    public Question(String createdBy, String updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean deleted, String id, Subject subject, String text, List<Answer> answers) {
         super(createdBy, updateBy, createdAt, updatedAt, deleted);
         this.id = id;
         this.subject = subject;
         this.text = text;
+        this.answers = answers;
     }
 }

@@ -9,7 +9,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ParameterObject
 public class SubjectUpdateDTO {
     private Integer id;
 

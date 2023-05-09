@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.News;
 import uz.test.abitur.dtos.ResponseDTO;
@@ -26,6 +27,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_NEWS_URL;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_NEWS_URL)
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 @Tag(name = "News Controller", description = "News API")
 public class NewsController {
     private final NewsService newsService;
@@ -34,11 +36,12 @@ public class NewsController {
             @ApiResponse(responseCode = "200", description = "News created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO<News>> create(@Valid NewsCreateDTO dto) {
+    public ResponseEntity<ResponseDTO<News>> create(@Valid @RequestBody NewsCreateDTO dto) {
         News news = newsService.create(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Created Successfully"));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get an existing news", responses = {
             @ApiResponse(responseCode = "200", description = "Get News", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
@@ -48,10 +51,11 @@ public class NewsController {
         return ResponseEntity.ok(new ResponseDTO<>(news));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get paged news", responses = {
             @ApiResponse(responseCode = "200", description = "Returned news", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<News>>> getAll(@RequestParam(required = false, defaultValue = "15") Integer size,
                                                           @RequestParam(required = false, defaultValue = "0") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
@@ -64,7 +68,7 @@ public class NewsController {
             @ApiResponse(responseCode = "200", description = "News updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/update")
-    public ResponseEntity<ResponseDTO<News>> update(NewsUpdateDTO dto) {
+    public ResponseEntity<ResponseDTO<News>> update(@RequestBody NewsUpdateDTO dto) {
         News news = newsService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Updated Successfully"));
     }

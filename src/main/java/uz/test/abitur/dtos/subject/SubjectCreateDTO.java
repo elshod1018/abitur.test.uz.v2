@@ -9,7 +9,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ParameterObject
 public class SubjectCreateDTO {
     @NotBlank(message = "Name can't be blank")
     private String name;

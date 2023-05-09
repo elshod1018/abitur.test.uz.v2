@@ -28,7 +28,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "User registered", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/user/register")
-    public ResponseEntity<ResponseDTO<AuthUser>> register(@Valid UserCreateDTO dto) {
+    public ResponseEntity<ResponseDTO<AuthUser>> register(@Valid @RequestBody UserCreateDTO dto) {
         AuthUser authUser = authUserService.create(dto);
         return ResponseEntity.ok(new ResponseDTO<>(authUser, "Registered successfully"));
     }
@@ -37,7 +37,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "Access token generated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping({"/access/token"})
-    public ResponseEntity<ResponseDTO<TokenResponse>> generateToken(@Valid TokenRequest tokenRequest) {
+    public ResponseEntity<ResponseDTO<TokenResponse>> generateToken(@Valid @RequestBody TokenRequest tokenRequest) {
         TokenResponse tokenResponse = authUserService.generateToken(tokenRequest);
         return ResponseEntity.ok(new ResponseDTO<>(tokenResponse));
     }
@@ -56,7 +56,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "User activated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/user/activate")
-    public ResponseEntity<ResponseDTO<String>> activate(@NonNull @Valid UserActivationDTO dto) {
+    public ResponseEntity<ResponseDTO<String>> activate(@Valid @RequestBody UserActivationDTO dto) {
         String activated = authUserService.activate(dto);
         return ResponseEntity.ok(new ResponseDTO<>(activated));
     }
@@ -65,7 +65,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "User activated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/code/resend")
-    public ResponseEntity<ResponseDTO<String>> resendCode(@NonNull @RequestParam String phoneNumber) {
+    public ResponseEntity<ResponseDTO<String>> resendCode(@RequestParam String phoneNumber) {
         authUserService.resendCode(phoneNumber);
         return ResponseEntity.ok(new ResponseDTO<>("Sms code sent successfully"));
     }

@@ -10,7 +10,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ParameterObject
 public class NewsUpdateDTO {
     private Integer id;
 

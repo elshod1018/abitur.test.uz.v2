@@ -14,6 +14,7 @@ import uz.test.abitur.config.security.JwtUtils;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.domains.UserSMS;
 import uz.test.abitur.dtos.auth.*;
+import uz.test.abitur.dtos.user.UserProfileUpdateDTO;
 import uz.test.abitur.dtos.user.UserUpdateDTO;
 import uz.test.abitur.enums.SMSCodeType;
 import uz.test.abitur.enums.Status;
@@ -85,7 +86,7 @@ public class AuthUserService {
 
     public AuthUser update(UserUpdateDTO dto) {
         AuthUser user = findById(dto.getId());
-        USER_MAPPER.updateNewsFromDTO(dto, user);
+        USER_MAPPER.updateUsersFromDTO(dto, user);
         return authUserRepository.save(user);
     }
 
@@ -116,5 +117,11 @@ public class AuthUserService {
         AuthUser user = findById(id);
         user.setDeleted(true);
         authUserRepository.save(user);
+    }
+
+    public AuthUser updateProfile(UserProfileUpdateDTO dto) {
+        AuthUser user = findById(dto.getId());
+        USER_MAPPER.updateUsersProfileFromDTO(dto, user);
+        return null;
     }
 }

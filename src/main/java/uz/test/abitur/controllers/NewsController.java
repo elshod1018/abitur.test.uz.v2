@@ -34,7 +34,7 @@ public class NewsController {
             @ApiResponse(responseCode = "200", description = "News created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO<News>> create(@Valid NewsCreateDTO dto) {
+    public ResponseEntity<ResponseDTO<News>> create(@Valid @RequestBody NewsCreateDTO dto) {
         News news = newsService.create(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Created Successfully"));
     }
@@ -64,7 +64,7 @@ public class NewsController {
             @ApiResponse(responseCode = "200", description = "News updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/update")
-    public ResponseEntity<ResponseDTO<News>> update(NewsUpdateDTO dto) {
+    public ResponseEntity<ResponseDTO<News>> update(@RequestBody NewsUpdateDTO dto) {
         News news = newsService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Updated Successfully"));
     }

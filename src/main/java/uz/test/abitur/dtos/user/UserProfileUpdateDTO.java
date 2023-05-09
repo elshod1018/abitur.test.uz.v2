@@ -1,8 +1,8 @@
 package uz.test.abitur.dtos.user;
 
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.enums.Role;
 import uz.test.abitur.enums.Status;
 
@@ -11,10 +11,12 @@ import uz.test.abitur.enums.Status;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDTO {
+public class UserProfileUpdateDTO {
     private String id;
 
-    private Role role;
+    private String firstName;
 
-    private Status status;
+    private String middleName;
+
+    private String lastName;
 }

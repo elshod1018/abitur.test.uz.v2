@@ -4,11 +4,12 @@ import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.dtos.auth.UserCreateDTO;
+import uz.test.abitur.dtos.user.UserProfileUpdateDTO;
 import uz.test.abitur.dtos.user.UserUpdateDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-09T11:18:30+0500",
+    date = "2023-05-09T15:36:04+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.6 (Private Build)"
 )
 @Component
@@ -47,7 +48,7 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public void updateNewsFromDTO(UserUpdateDTO dto, AuthUser user) {
+    public void updateUsersFromDTO(UserUpdateDTO dto, AuthUser user) {
         if ( dto == null ) {
             return;
         }
@@ -60,6 +61,26 @@ public class UserMapperImpl implements UserMapper {
         }
         if ( dto.getStatus() != null ) {
             user.setStatus( dto.getStatus() );
+        }
+    }
+
+    @Override
+    public void updateUsersProfileFromDTO(UserProfileUpdateDTO dto, AuthUser user) {
+        if ( dto == null ) {
+            return;
+        }
+
+        if ( dto.getId() != null ) {
+            user.setId( dto.getId() );
+        }
+        if ( dto.getFirstName() != null ) {
+            user.setFirstName( dto.getFirstName() );
+        }
+        if ( dto.getMiddleName() != null ) {
+            user.setMiddleName( dto.getMiddleName() );
+        }
+        if ( dto.getLastName() != null ) {
+            user.setLastName( dto.getLastName() );
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ParameterObject
 public class NewsCreateDTO {
 
     private String title;

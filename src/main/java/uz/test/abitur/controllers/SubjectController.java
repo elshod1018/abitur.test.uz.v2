@@ -19,7 +19,6 @@ import uz.test.abitur.dtos.subject.SubjectCreateDTO;
 import uz.test.abitur.dtos.subject.SubjectUpdateDTO;
 import uz.test.abitur.services.SubjectService;
 
-import static uz.test.abitur.utils.UrlUtils.BASE_NEWS_URL;
 import static uz.test.abitur.utils.UrlUtils.BASE_SUBJECTS_URL;
 
 @RestController
@@ -33,7 +32,7 @@ public class SubjectController {
             @ApiResponse(responseCode = "200", description = "Subject created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO<Subject>> create(@Valid SubjectCreateDTO dto) {
+    public ResponseEntity<ResponseDTO<Subject>> create(@Valid @RequestBody SubjectCreateDTO dto) {
         Subject news = subjectService.create(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "Subject Created Successfully"));
     }
@@ -50,7 +49,7 @@ public class SubjectController {
     @Operation(summary = "This API is used for get paged Subjects", responses = {
             @ApiResponse(responseCode = "200", description = "Subjects returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<Subject>>> getAll(@RequestParam(required = false, defaultValue = "10") Integer size,
                                                              @RequestParam(required = false, defaultValue = "0") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "mandatory")
@@ -64,7 +63,7 @@ public class SubjectController {
             @ApiResponse(responseCode = "200", description = "Subject updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/update")
-    public ResponseEntity<ResponseDTO<Subject>> update(SubjectUpdateDTO dto) {
+    public ResponseEntity<ResponseDTO<Subject>> update(@RequestBody SubjectUpdateDTO dto) {
         Subject subject = subjectService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(subject, "Subject Updated Successfully"));
     }

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+import static uz.test.abitur.utils.UrlUtils.*;
+
 @Configuration
 public class SwaggerConfig {
     @Bean
@@ -66,14 +68,6 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi authOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("auth")
-                .pathsToMatch("/api/v1/auth/**")
-                .build();
-    }
-
-    @Bean
     public GroupedOpenApi allOpenApi() {
         return GroupedOpenApi.builder()
                 .group("all")
@@ -81,4 +75,33 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi authOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("auth")
+                .pathsToMatch(BASE_AUTH_URL)
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi usersOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("users")
+                .pathsToMatch(BASE_USERS_URL)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi newsOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("news")
+                .pathsToMatch(BASE_NEWS_URL)
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi subjectsOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("subjects")
+                .pathsToMatch(BASE_SUBJECTS_URL)
+                .build();
+    }
 }

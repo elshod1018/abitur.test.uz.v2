@@ -6,7 +6,6 @@ import org.springdoc.core.annotations.ParameterObject;
 
 import java.io.Serializable;
 
-@ParameterObject
 public record UserActivationDTO(@NotBlank(message = "Phone Number can not be blank") String phoneNumber,
                                 @NotBlank(message = "Code can not be blank") String code) {
 }

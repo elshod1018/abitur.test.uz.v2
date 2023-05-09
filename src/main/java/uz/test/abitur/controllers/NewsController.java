@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.News;
 import uz.test.abitur.dtos.ResponseDTO;
@@ -26,6 +27,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_NEWS_URL;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_NEWS_URL)
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 @Tag(name = "News Controller", description = "News API")
 public class NewsController {
     private final NewsService newsService;
@@ -39,6 +41,7 @@ public class NewsController {
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Created Successfully"));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get an existing news", responses = {
             @ApiResponse(responseCode = "200", description = "Get News", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
@@ -48,6 +51,7 @@ public class NewsController {
         return ResponseEntity.ok(new ResponseDTO<>(news));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get paged news", responses = {
             @ApiResponse(responseCode = "200", description = "Returned news", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})

@@ -9,7 +9,7 @@ import uz.test.abitur.dtos.user.UserUpdateDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-09T15:36:04+0500",
+    date = "2023-05-09T16:57:53+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.6 (Private Build)"
 )
 @Component
@@ -70,9 +70,6 @@ public class UserMapperImpl implements UserMapper {
             return;
         }
 
-        if ( dto.getId() != null ) {
-            user.setId( dto.getId() );
-        }
         if ( dto.getFirstName() != null ) {
             user.setFirstName( dto.getFirstName() );
         }

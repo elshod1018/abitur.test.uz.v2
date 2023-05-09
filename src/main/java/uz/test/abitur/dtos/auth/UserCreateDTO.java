@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ParameterObject
 public final class UserCreateDTO implements Serializable {
     @NotBlank(message = "First Name can not be blank")
     private String firstName;

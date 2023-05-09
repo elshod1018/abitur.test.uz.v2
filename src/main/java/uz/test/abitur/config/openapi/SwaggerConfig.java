@@ -39,7 +39,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Abitur Test Uz")
-                        .description("API for applicants for solving questions")
+                        .description("API for applicants solving questions")
                         .version("2.0")
                         .contact(new Contact()
                                 .name("Elshod Nuriddinov ")
@@ -54,8 +54,7 @@ public class SwaggerConfig {
                         .url("https://springshop.wiki.github.org/docs"))
                 .servers(List.of(
                         new Server().url("http://localhost:8080").description("Development Server"),
-                        new Server().url("http://localhost:9090").description("Test Server"),
-                        new Server().url("http://localhost:8080").description("Production Server"))
+                        new Server().url("https://abiturtestuzv2.up.railway.app").description("Production Server"))
                 )
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components((new Components()
@@ -71,7 +70,7 @@ public class SwaggerConfig {
     public GroupedOpenApi allOpenApi() {
         return GroupedOpenApi.builder()
                 .group("all")
-                .pathsToMatch("/**")
+                .pathsToMatch(BASE_URL + "/**")
                 .build();
     }
 
@@ -79,14 +78,15 @@ public class SwaggerConfig {
     public GroupedOpenApi authOpenApi() {
         return GroupedOpenApi.builder()
                 .group("auth")
-                .pathsToMatch(BASE_AUTH_URL)
+                .pathsToMatch(BASE_AUTH_URL + "/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi usersOpenApi() {
         return GroupedOpenApi.builder()
                 .group("users")
-                .pathsToMatch(BASE_USERS_URL)
+                .pathsToMatch(BASE_USERS_URL + "/**")
                 .build();
     }
 
@@ -94,14 +94,15 @@ public class SwaggerConfig {
     public GroupedOpenApi newsOpenApi() {
         return GroupedOpenApi.builder()
                 .group("news")
-                .pathsToMatch(BASE_NEWS_URL)
+                .pathsToMatch(BASE_NEWS_URL + "/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi subjectsOpenApi() {
         return GroupedOpenApi.builder()
                 .group("subjects")
-                .pathsToMatch(BASE_SUBJECTS_URL)
+                .pathsToMatch(BASE_SUBJECTS_URL + "/**")
                 .build();
     }
 }

@@ -12,7 +12,6 @@ import uz.test.abitur.enums.Status;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileUpdateDTO {
-    private String id;
 
     private String firstName;
 

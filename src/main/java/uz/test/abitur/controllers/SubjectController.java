@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.Subject;
 import uz.test.abitur.dtos.ResponseDTO;
@@ -24,6 +25,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_SUBJECTS_URL;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_SUBJECTS_URL)
+@PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
 @Tag(name = "Subject Controller", description = "Subject API")
 public class SubjectController {
     private final SubjectService subjectService;
@@ -37,6 +39,7 @@ public class SubjectController {
         return ResponseEntity.ok(new ResponseDTO<>(news, "Subject Created Successfully"));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get an existing subject", responses = {
             @ApiResponse(responseCode = "200", description = "Subject Returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
@@ -46,6 +49,7 @@ public class SubjectController {
         return ResponseEntity.ok(new ResponseDTO<>(subject));
     }
 
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @Operation(summary = "This API is used for get paged Subjects", responses = {
             @ApiResponse(responseCode = "200", description = "Subjects returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})

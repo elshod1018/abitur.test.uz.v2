@@ -36,6 +36,7 @@ public class SubjectService {
 
     public Subject update(SubjectUpdateDTO dto) {
         Subject subject = findById(dto.getId());
+        dto.setCode(dto.getCode().toUpperCase());
         findByCodeAndMandatory(dto.getCode(), dto.isMandatory());
         SUBJECT_MAPPER.updateNewsFromDTO(dto, subject);
         return subjectRepository.save(subject);

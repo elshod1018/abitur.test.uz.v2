@@ -10,8 +10,12 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.config.security.JwtUtils;
+import uz.test.abitur.config.security.SessionUser;
 import uz.test.abitur.domains.AuthUser;
+import uz.test.abitur.domains.Document;
 import uz.test.abitur.domains.UserSMS;
 import uz.test.abitur.dtos.auth.*;
 import uz.test.abitur.dtos.user.UserProfileUpdateDTO;
@@ -20,7 +24,10 @@ import uz.test.abitur.enums.SMSCodeType;
 import uz.test.abitur.enums.Status;
 import uz.test.abitur.enums.TokenType;
 import uz.test.abitur.repositories.AuthUserRepository;
+import uz.test.abitur.utils.BaseUtils;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import static uz.test.abitur.mapper.UserMapper.USER_MAPPER;
@@ -34,6 +41,9 @@ public class AuthUserService {
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserSMSService userSMSService;
+    private final DocumentService documentService;
+    private final SessionUser sessionUser;
+
 
     public AuthUser create(UserCreateDTO dto) {
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
@@ -119,9 +129,11 @@ public class AuthUserService {
         authUserRepository.save(user);
     }
 
-    public AuthUser updateProfile(UserProfileUpdateDTO dto) {
-        AuthUser user = findById(dto.getId());
+    public AuthUser updateProfile(UserProfileUpdateDTO dto, MultipartFile file) throws IOException {
+        AuthUser user = sessionUser.user();
         USER_MAPPER.updateUsersProfileFromDTO(dto, user);
-        return null;
+        Document document = documentService.saveMultipartDocument(file);
+        user.setProfilePhotoGeneratedName(document.getGeneratedName());
+        return authUserRepository.save(user);
     }
 }

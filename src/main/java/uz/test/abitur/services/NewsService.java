@@ -3,17 +3,11 @@ package uz.test.abitur.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
-import org.springframework.transaction.annotation.Transactional;
 import uz.test.abitur.domains.News;
 import uz.test.abitur.dtos.news.NewsCreateDTO;
 import uz.test.abitur.dtos.news.NewsUpdateDTO;
-import uz.test.abitur.ex_handlers.exeptions.NotFoundException;
 import uz.test.abitur.repositories.NewsRepository;
-
-import java.util.List;
 
 import static uz.test.abitur.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -36,7 +30,7 @@ public class NewsService {
 
     public News findById(Integer id) {
         return newsRepository.findNewsById(id)
-                .orElseThrow(() -> new NotFoundException("News not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
     }
 
     public void delete(Integer id) {

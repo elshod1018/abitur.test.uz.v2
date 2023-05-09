@@ -5,23 +5,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uz.test.abitur.config.security.JwtUtils;
 import uz.test.abitur.domains.AuthUser;
-import uz.test.abitur.domains.News;
 import uz.test.abitur.domains.UserSMS;
 import uz.test.abitur.dtos.auth.*;
 import uz.test.abitur.dtos.user.UserUpdateDTO;
 import uz.test.abitur.enums.SMSCodeType;
 import uz.test.abitur.enums.Status;
 import uz.test.abitur.enums.TokenType;
-import uz.test.abitur.ex_handlers.exeptions.NotFoundException;
 import uz.test.abitur.repositories.AuthUserRepository;
 
 import java.util.Objects;
@@ -104,12 +100,12 @@ public class AuthUserService {
 
     public AuthUser findByPhoneNumber(String phoneNumber) {
         return authUserRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public AuthUser findById(String id) {
         return authUserRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public Page<AuthUser> getAll(Pageable pageable) {

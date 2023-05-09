@@ -51,7 +51,7 @@ public class NewsController {
     @Operation(summary = "This API is used for get paged news", responses = {
             @ApiResponse(responseCode = "200", description = "Returned news", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @GetMapping("/getAll")
+    @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<News>>> getAll(@RequestParam(required = false, defaultValue = "15") Integer size,
                                                           @RequestParam(required = false, defaultValue = "0") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");

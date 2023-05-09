@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import uz.test.abitur.domains.Subject;
 import uz.test.abitur.dtos.subject.SubjectCreateDTO;
 import uz.test.abitur.dtos.subject.SubjectUpdateDTO;
-import uz.test.abitur.ex_handlers.exeptions.NotFoundException;
 import uz.test.abitur.repositories.SubjectRepository;
 
 import java.util.Optional;
@@ -28,7 +27,7 @@ public class SubjectService {
 
     public Subject findById(Integer id) {
         return subjectRepository.findSubjectById(id)
-                .orElseThrow(() -> new NotFoundException("Subject not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Subject not found with id: " + id));
     }
 
     public Page<Subject> getAll(Pageable pageable) {
@@ -51,7 +50,7 @@ public class SubjectService {
     private void findByCodeAndMandatory(String code, boolean mandatory) {
         Optional<Subject> subject = subjectRepository.findByCodeAndMandatory(code, mandatory);
         subject.ifPresent(value -> {
-            throw new NotFoundException("Subject already exist with code '%s' and mandatory '%s'"
+            throw new RuntimeException("Subject already exist with code '%s' and mandatory '%s'"
                     .formatted(value.getCode(), value.isMandatory()));
         });
     }

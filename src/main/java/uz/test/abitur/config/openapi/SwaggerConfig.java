@@ -56,6 +56,7 @@ public class SwaggerConfig {
                         new Server().url("https://abiturtestuzv2.up.railway.app").description("Production Server"),
                         new Server().url("http://localhost:8080").description("Development Server"))
                 )
+
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components((new Components()
                         .addSecuritySchemes("bearerAuth", new SecurityScheme()

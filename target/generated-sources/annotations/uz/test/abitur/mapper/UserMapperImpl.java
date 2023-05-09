@@ -9,7 +9,7 @@ import uz.test.abitur.dtos.user.UserUpdateDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-09T22:14:59+0500",
+    date = "2023-05-09T19:48:43+0500",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.6 (Private Build)"
 )
 @Component

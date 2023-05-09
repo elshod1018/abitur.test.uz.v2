@@ -83,13 +83,12 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO<>(user, "User Updated Successfully"));
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @Operation(summary = "This API is used for delete users", responses = {
             @ApiResponse(responseCode = "200", description = "User deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @DeleteMapping("/delete/{id:.*}")
-    public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable String id) {
-        authUserService.delete(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO<Void>> delete() {
+        authUserService.delete();
         return ResponseEntity.ok(new ResponseDTO<>(null, "User Deleted Successfully"));
     }
 

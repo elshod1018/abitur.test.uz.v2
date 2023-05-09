@@ -105,4 +105,11 @@ public class SwaggerConfig {
                 .pathsToMatch(BASE_SUBJECTS_URL + "/**")
                 .build();
     }
+    @Bean
+    public GroupedOpenApi questionsOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("questions")
+                .pathsToMatch(BASE_QUESTIONS_URL + "/**")
+                .build();
+    }
 }

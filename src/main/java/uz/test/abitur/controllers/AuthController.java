@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.dtos.ResponseDTO;
@@ -21,6 +22,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_AUTH_URL;
 @RequiredArgsConstructor
 @RequestMapping(BASE_AUTH_URL)
 @Tag(name = "Authentication", description = "Authentication API")
+@PreAuthorize("isAnonymous()")
 public class AuthController {
     private final AuthUserService authUserService;
 

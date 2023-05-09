@@ -126,8 +126,8 @@ public class AuthUserService {
         return authUserRepository.getAll(pageable);
     }
 
-    public void delete(String id) {
-        AuthUser user = findById(id);
+    public void delete() {
+        AuthUser user = sessionUser.user();
         user.setDeleted(true);
         authUserRepository.save(user);
     }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.Question;
 import uz.test.abitur.dtos.ResponseDTO;
@@ -24,6 +25,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_QUESTIONS_URL;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_QUESTIONS_URL)
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 @Tag(name = "Question Controller", description = "Question API")
 public class QuestionController {
     private final QuestionService questionService;
@@ -38,6 +40,7 @@ public class QuestionController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'USER')")
     @Operation(summary = "This API is used for getting a question", responses = {
             @ApiResponse(responseCode = "200", description = "Question returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
@@ -59,6 +62,7 @@ public class QuestionController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'USER')")
     @Operation(summary = "This API is used for getting paged questions", responses = {
             @ApiResponse(responseCode = "200", description = "Questions returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
@@ -81,6 +85,4 @@ public class QuestionController {
         questionService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Question deleted successfully"));
     }
-
-
 }

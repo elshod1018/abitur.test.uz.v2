@@ -24,23 +24,22 @@ public class UserSMSService {
             return userSMS;
         }
         String smsCode = "666666"; /*baseUtils.generateCode()*/
-        userSMS = save(userId, smsCode);
-//        smsCode = smsCode.substring(0, 3) + " " + smsCode.substring(3);
-////        twilioService.sendSMS(user.getPhoneNumber(), smsCode);
+        userSMS = save(userId, smsCode, type);
         applicationEventPublisher.publishEvent(new SendSMSEvent(user.getPhoneNumber(), smsCode));
         return userSMS;
     }
 
-    private UserSMS save(String userId, String smsCode) {
+    private UserSMS save(String userId, String smsCode, SMSCodeType type) {
         UserSMS userSMS = UserSMS.builder()
                 .userId(userId)
                 .code(smsCode)
+                .type(type)
                 .build();
         return userSMSRepository.save(userSMS);
     }
 
     public UserSMS findByUserId(String userId, SMSCodeType type) {
-        return userSMSRepository.findByUserId(type,userId);
+        return userSMSRepository.findByUserId(type, userId);
     }
 
     public UserSMS update(UserSMS userSMS) {

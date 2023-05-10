@@ -21,7 +21,7 @@ public class DocumentSavedEventListener {
 
     @Async
     @TransactionalEventListener(value = DocumentSavedEvent.class)
-    public void userCreatedEventListener(DocumentSavedEvent event) {
+    public void documentSavedEventListener(DocumentSavedEvent event) {
         MultipartFile file = event.getFile();
         Document document = event.getDocument();
         if (!Objects.isNull(file) && !Objects.isNull(document)) {

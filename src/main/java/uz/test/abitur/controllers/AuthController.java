@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -78,8 +77,8 @@ public class AuthController {
     @Operation(summary = "This API is used for get sms code for reset password", responses = {
             @ApiResponse(responseCode = "200", description = "Sms sent", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @PostMapping("/forget/password")
-    public ResponseEntity<ResponseDTO<Void>> resetPasswordRequest(@Valid @RequestBody String phoneNumber) {
+    @PostMapping("/forget/password/{phoneNumber:.*}")
+    public ResponseEntity<ResponseDTO<Void>> resetPasswordRequest(@PathVariable String phoneNumber) {
         log.info("Reset password request for phone number: {}", phoneNumber);
         authUserService.resendCode(phoneNumber, SMSCodeType.FORGET_PASSWORD);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent successfully"));
@@ -91,7 +90,7 @@ public class AuthController {
     @PostMapping("/reset/password")
     public ResponseEntity<ResponseDTO<Void>> resetPassword(@RequestBody UserResetPasswordDTO dto) {
         authUserService.resetPassword(dto);
-        return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent"));
+        return ResponseEntity.ok(new ResponseDTO<>(null, "Password reset successfully"));
     }
 }
 

@@ -16,7 +16,7 @@ public class UserEventListener {
 
     @Async
     @TransactionalEventListener(value = SendSMSEvent.class)
-    public void userCreatedEventListener(SendSMSEvent event) {
+    public void sendSMSEventListener(SendSMSEvent event) {
         String phoneNumber = event.getPhoneNumber();
         String smsCode = event.getSmsCode();
         if (!Objects.isNull(phoneNumber) && !Objects.isNull(smsCode)) {

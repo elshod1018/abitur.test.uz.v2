@@ -145,6 +145,9 @@ public class AuthUserService {
             userSMSService.update(userSMS);
             authUser.setPassword(passwordEncoder.encode(dto.password()));
             authUserRepository.save(authUser);
+            return;
         }
+        throw new RuntimeException("Code is invalid");
+
     }
 }

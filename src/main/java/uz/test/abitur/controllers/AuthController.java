@@ -79,7 +79,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/forget/password/{phoneNumber:.*}")
     public ResponseEntity<ResponseDTO<Void>> resetPasswordRequest(@PathVariable String phoneNumber) {
-        log.info("Reset password request for phone number: {}", phoneNumber);
+        log.info("Reset password request for phone number : {}", phoneNumber);
         authUserService.resendCode(phoneNumber, SMSCodeType.FORGET_PASSWORD);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent successfully"));
     }

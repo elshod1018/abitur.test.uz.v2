@@ -7,9 +7,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.domains.Document;
 import uz.test.abitur.evenet_listeners.events.DocumentSavedEvent;
-import uz.test.abitur.evenet_listeners.events.UserCreatedEvent;
 import uz.test.abitur.services.DocumentService;
-import uz.test.abitur.services.TwilioService;
 import uz.test.abitur.services.firebase.FirebaseService;
 
 import java.util.Objects;

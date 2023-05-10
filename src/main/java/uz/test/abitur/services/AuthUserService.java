@@ -10,7 +10,6 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.config.security.JwtUtils;
 import uz.test.abitur.config.security.SessionUser;
@@ -24,10 +23,8 @@ import uz.test.abitur.enums.SMSCodeType;
 import uz.test.abitur.enums.Status;
 import uz.test.abitur.enums.TokenType;
 import uz.test.abitur.repositories.AuthUserRepository;
-import uz.test.abitur.utils.BaseUtils;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 import static uz.test.abitur.mapper.UserMapper.USER_MAPPER;
@@ -104,14 +101,14 @@ public class AuthUserService {
         return authUserRepository.exist(phoneNumber);
     }
 
-    public void resendCode(String phoneNumber) {
+    public void resendCode(String phoneNumber, SMSCodeType smsCodeType) {
         AuthUser user = findByPhoneNumber(phoneNumber);
-        userSMSService.createSMSCode(user, SMSCodeType.FORGET_PASSWORD);
+        userSMSService.createSMSCode(user, smsCodeType);
     }
 
     public AuthUser findByPhoneNumber(String phoneNumber) {
         return authUserRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found by phoneNumber: " + phoneNumber));
     }
 
     public AuthUser findById(String id) {
@@ -138,5 +135,16 @@ public class AuthUserService {
         Document document = documentService.saveMultipartDocument(file);
         user.setProfilePhotoGeneratedName(document.getGeneratedName());
         return authUserRepository.save(user);
+    }
+
+    public void resetPassword(UserResetPasswordDTO dto) {
+        AuthUser authUser = findByPhoneNumber(dto.phoneNumber());
+        UserSMS userSMS = userSMSService.findByUserId(authUser.getId(), SMSCodeType.FORGET_PASSWORD);
+        if (!Objects.isNull(userSMS) && userSMS.getCode().equals(dto.code())) {
+            userSMS.setExpired(true);
+            userSMSService.update(userSMS);
+            authUser.setPassword(passwordEncoder.encode(dto.password()));
+            authUserRepository.save(authUser);
+        }
     }
 }

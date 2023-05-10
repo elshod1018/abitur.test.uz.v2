@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.domains.UserSMS;
 import uz.test.abitur.enums.SMSCodeType;
-import uz.test.abitur.evenet_listeners.events.UserCreatedEvent;
+import uz.test.abitur.evenet_listeners.events.SendSMSEvent;
 import uz.test.abitur.repositories.UserSMSRepository;
 
 import java.util.Objects;
@@ -27,7 +27,7 @@ public class UserSMSService {
         userSMS = save(userId, smsCode);
 //        smsCode = smsCode.substring(0, 3) + " " + smsCode.substring(3);
 ////        twilioService.sendSMS(user.getPhoneNumber(), smsCode);
-        applicationEventPublisher.publishEvent(new UserCreatedEvent(user.getPhoneNumber(), smsCode));
+        applicationEventPublisher.publishEvent(new SendSMSEvent(user.getPhoneNumber(), smsCode));
         return userSMS;
     }
 
@@ -40,7 +40,7 @@ public class UserSMSService {
     }
 
     public UserSMS findByUserId(String userId, SMSCodeType type) {
-        return userSMSRepository.findByUserId( type,userId);
+        return userSMSRepository.findByUserId(type,userId);
     }
 
     public UserSMS update(UserSMS userSMS) {

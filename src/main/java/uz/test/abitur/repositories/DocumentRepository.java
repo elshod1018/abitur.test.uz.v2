@@ -9,4 +9,7 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Query("select d from Document d where d.deleted = false and d.generatedName = ?1")
     Optional<Document> findByGeneratedName(String generatedName);
+
+    @Query("select d from Document d where d.deleted = false and d.id = ?1")
+    Optional<Document> findDocumetById(Integer id);
 }

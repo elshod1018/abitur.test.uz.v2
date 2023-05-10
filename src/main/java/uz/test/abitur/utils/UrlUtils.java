@@ -22,4 +22,7 @@ public interface UrlUtils {
     String BASE_DOCUMENTS_URL = BASE_URL + "/documents";
 
     String BASE_QUESTIONS_URL = BASE_URL + "/questions";
+
+    /* Test Session */
+    String BASE_TESTS_URL = BASE_URL + "/tests";
 }

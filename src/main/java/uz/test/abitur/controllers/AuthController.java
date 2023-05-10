@@ -6,18 +6,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.dtos.ResponseDTO;
 import uz.test.abitur.dtos.auth.*;
+import uz.test.abitur.enums.SMSCodeType;
 import uz.test.abitur.services.AuthUserService;
 
 import static uz.test.abitur.utils.UrlUtils.BASE_AUTH_URL;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(BASE_AUTH_URL)
@@ -67,9 +70,28 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "User activated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/code/resend")
-    public ResponseEntity<ResponseDTO<String>> resendCode(@RequestParam String phoneNumber) {
-        authUserService.resendCode(phoneNumber);
-        return ResponseEntity.ok(new ResponseDTO<>("Sms code sent successfully"));
+    public ResponseEntity<ResponseDTO<Void>> resendCode(@NonNull String phoneNumber) {
+        authUserService.resendCode(phoneNumber, SMSCodeType.ACTIVATION);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent successfully"));
+    }
+
+    @Operation(summary = "This API is used for get sms code for reset password", responses = {
+            @ApiResponse(responseCode = "200", description = "Sms sent", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @PostMapping("/forget/password")
+    public ResponseEntity<ResponseDTO<Void>> resetPasswordRequest(@Valid @RequestBody String phoneNumber) {
+        log.info("Reset password request for phone number: {}", phoneNumber);
+        authUserService.resendCode(phoneNumber, SMSCodeType.FORGET_PASSWORD);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent successfully"));
+    }
+
+    @Operation(summary = "This API is used for reset password", responses = {
+            @ApiResponse(responseCode = "200", description = "Password reset", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @PostMapping("/reset/password")
+    public ResponseEntity<ResponseDTO<Void>> resetPassword(@RequestBody UserResetPasswordDTO dto) {
+        authUserService.resetPassword(dto);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "Sms code sent"));
     }
 }
 

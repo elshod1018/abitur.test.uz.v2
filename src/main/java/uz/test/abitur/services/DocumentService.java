@@ -73,4 +73,9 @@ public class DocumentService {
     public Document update(Document document) {
         return documentRepository.save(document);
     }
+
+    public Document getFile(Integer id) {
+        return documentRepository.findDocumetById(id)
+                .orElseThrow(() -> new RuntimeException("Document Not found by id: '%s'".formatted(id)));
+    }
 }

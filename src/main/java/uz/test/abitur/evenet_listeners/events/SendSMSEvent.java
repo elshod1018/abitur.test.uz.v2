@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public final class UserCreatedEvent {
+public final class SendSMSEvent {
     private final String phoneNumber;
     private final String smsCode;
 }

@@ -64,4 +64,8 @@ public class QuestionService {
         question.setDeleted(true);
         questionRepository.save(question);
     }
+
+    public List<String> findNRandQuestionsBySubjectId(Integer subjectId, Integer count) {
+        return questionRepository.findNRandomBySubjectId(subjectId,count);
+    }
 }

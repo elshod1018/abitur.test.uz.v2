@@ -13,5 +13,5 @@ public class TestSessionCreateDTO {
 
     private Integer secondSubjectId;
 
-    private boolean mandatory;
+    private boolean withMandatory;
 }

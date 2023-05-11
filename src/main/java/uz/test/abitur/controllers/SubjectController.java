@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.test.abitur.domains.Subject;
 import uz.test.abitur.dtos.ResponseDTO;
+import uz.test.abitur.dtos.question.QuestionCountDTO;
 import uz.test.abitur.dtos.subject.SubjectCreateDTO;
 import uz.test.abitur.dtos.subject.SubjectUpdateDTO;
 import uz.test.abitur.services.SubjectService;
@@ -79,6 +80,14 @@ public class SubjectController {
     public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Integer id) {
         subjectService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Subject Deleted Successfully"));
+    }
+    @Operation(summary = "This API is used to add count of questions for Subject for solve test", responses = {
+            @ApiResponse(responseCode = "200", description = "Added", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @PostMapping("/add/count")
+    public ResponseEntity<ResponseDTO<Void>> addCount(QuestionCountDTO dto) {
+        subjectService.addCount(dto);
+        return ResponseEntity.ok(new ResponseDTO<>(null, "Count added Successfully"));
     }
 
 }

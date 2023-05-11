@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
+    @Query("select s from Subject s where s.deleted = false and s.mandatory = true")
+    List<Subject> findMandatorySubjects();
     @Query("select s from Subject s where s.deleted = false  and s.id = ?1")
     Optional<Subject> findSubjectById(Integer id);
     @Query("select s from Subject s where s.deleted = false  and s.code = ?1 and s.mandatory = ?2")

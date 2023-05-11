@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.test.abitur.dtos.ResponseDTO;
 import uz.test.abitur.dtos.subject.SubjectCreateDTO;
+import uz.test.abitur.dtos.test.TestSessionCreateDTO;
 
 import static uz.test.abitur.utils.UrlUtils.BASE_TESTS_URL;
 
@@ -26,7 +27,7 @@ public class TestController {
             @ApiResponse(responseCode = "200", description = "Test Started", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PostMapping("/start")
-    public ResponseEntity<ResponseDTO<Void>> create(@Valid @RequestBody SubjectCreateDTO dto) {
+    public ResponseEntity<ResponseDTO<Void>> create(@Valid @RequestBody TestSessionCreateDTO dto) {
 
         return ResponseEntity.ok(new ResponseDTO<>(null, "Subject Created Successfully"));
     }

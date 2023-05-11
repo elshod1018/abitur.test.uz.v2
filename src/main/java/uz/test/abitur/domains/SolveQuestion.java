@@ -6,10 +6,11 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SolveQuestion extends Auditable{
+public class SolveQuestion{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

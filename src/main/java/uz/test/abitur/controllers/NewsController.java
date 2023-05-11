@@ -32,9 +32,11 @@ import static uz.test.abitur.utils.UrlUtils.BASE_NEWS_URL;
 public class NewsController {
     private final NewsService newsService;
 
-    @Operation(summary = "This API is used for create a News", responses = {
-            @ApiResponse(responseCode = "200", description = "News created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS ,This API is used for create a News"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "News created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO<News>> create(@Valid @RequestBody NewsCreateDTO dto) {
         News news = newsService.create(dto);
@@ -42,9 +44,11 @@ public class NewsController {
     }
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
-    @Operation(summary = "This API is used for get an existing news", responses = {
-            @ApiResponse(responseCode = "200", description = "Get News", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS,USERS ,This API is used for get an existing news"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Get News", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/{id:.*}")
     public ResponseEntity<ResponseDTO<News>> get(@PathVariable Integer id) {
         News news = newsService.findById(id);
@@ -52,9 +56,11 @@ public class NewsController {
     }
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
-    @Operation(summary = "This API is used for get paged news", responses = {
-            @ApiResponse(responseCode = "200", description = "Returned news", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS,USERS ,This API is used for get paged news"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Returned news", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<News>>> getAll(@RequestParam(required = false, defaultValue = "15") Integer size,
                                                           @RequestParam(required = false, defaultValue = "0") Integer page) {
@@ -64,18 +70,22 @@ public class NewsController {
         return ResponseEntity.ok(new ResponseDTO<>(newsList));
     }
 
-    @Operation(summary = "This API is used for update news", responses = {
-            @ApiResponse(responseCode = "200", description = "News updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS ,This API is used for update news"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "News updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO<News>> update(@RequestBody NewsUpdateDTO dto) {
         News news = newsService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(news, "News Updated Successfully"));
     }
 
-    @Operation(summary = "This API is used for delete news", responses = {
-            @ApiResponse(responseCode = "200", description = "News delete", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS ,This API is used for delete news"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "News delete", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @DeleteMapping("/delete/{id:.*}")
     public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Integer id) {
         newsService.delete(id);

@@ -31,9 +31,11 @@ import static uz.test.abitur.utils.UrlUtils.BASE_SUBJECTS_URL;
 public class SubjectController {
     private final SubjectService subjectService;
 
-    @Operation(summary = "This API is used for create a Subject", responses = {
-            @ApiResponse(responseCode = "200", description = "Subject created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used for create a Subject"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Subject created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO<Subject>> create(@Valid @RequestBody SubjectCreateDTO dto) {
         Subject news = subjectService.create(dto);
@@ -41,9 +43,11 @@ public class SubjectController {
     }
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
-    @Operation(summary = "This API is used for get an existing subject", responses = {
-            @ApiResponse(responseCode = "200", description = "Subject Returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , USERS , This API is used for get an existing subject"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Subject Returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/{id:.*}")
     public ResponseEntity<ResponseDTO<Subject>> get(@PathVariable Integer id) {
         Subject subject = subjectService.findById(id);
@@ -51,9 +55,11 @@ public class SubjectController {
     }
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
-    @Operation(summary = "This API is used for get paged Subjects", responses = {
-            @ApiResponse(responseCode = "200", description = "Subjects returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , USERS , This API is used for get paged Subjects"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Subjects returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<Subject>>> getAll(@RequestParam(required = false, defaultValue = "10") Integer size,
                                                              @RequestParam(required = false, defaultValue = "0") Integer page) {
@@ -64,26 +70,32 @@ public class SubjectController {
         return ResponseEntity.ok(new ResponseDTO<>(subjectsList));
     }
 
-    @Operation(summary = "This API is used for update Subjects", responses = {
-            @ApiResponse(responseCode = "200", description = "Subject updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used for update Subjects"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Subject updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO<Subject>> update(@RequestBody SubjectUpdateDTO dto) {
         Subject subject = subjectService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(subject, "Subject Updated Successfully"));
     }
 
-    @Operation(summary = "This API is used for delete Subject", responses = {
-            @ApiResponse(responseCode = "200", description = "Subject deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used for delete Subject"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Subject deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @DeleteMapping("/delete/{id:.*}")
     public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable Integer id) {
         subjectService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Subject Deleted Successfully"));
     }
-    @Operation(summary = "This API is used to add count of questions for Subject for solve test", responses = {
-            @ApiResponse(responseCode = "200", description = "Added", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used to add count of questions for Subject for solve test"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Added", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PostMapping("/add/count")
     public ResponseEntity<ResponseDTO<Void>> addCount(QuestionCountDTO dto) {
         subjectService.addCount(dto);

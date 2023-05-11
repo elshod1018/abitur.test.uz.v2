@@ -30,9 +30,11 @@ import static uz.test.abitur.utils.UrlUtils.BASE_QUESTIONS_URL;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @Operation(summary = "This API is used for create new question", responses = {
-            @ApiResponse(responseCode = "201", description = "Question created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS , This API is used for create new question"
+//            , responses = {
+//            @ApiResponse(responseCode = "201", description = "Question created", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO<Question>> create(@Valid @RequestBody QuestionCreateDTO dto) {
         Question question = questionService.create(dto);
@@ -41,9 +43,11 @@ public class QuestionController {
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'USER')")
-    @Operation(summary = "This API is used for getting a question", responses = {
-            @ApiResponse(responseCode = "200", description = "Question returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS,USERS , This API is used for getting a question"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Question returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/{id}")
     public ResponseEntity<ResponseDTO<Question>> getById(@PathVariable String id) {
 
@@ -52,9 +56,11 @@ public class QuestionController {
     }
 
 
-    @Operation(summary = "This API is used for updating a question", responses = {
-            @ApiResponse(responseCode = "200", description = "Question updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS , This API is used for updating a question"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Question updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO<Question>> update( @RequestBody QuestionUpdateDTO dto) {
         Question question = questionService.update(dto);
@@ -63,9 +69,11 @@ public class QuestionController {
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN', 'USER')")
-    @Operation(summary = "This API is used for getting paged questions", responses = {
-            @ApiResponse(responseCode = "200", description = "Questions returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS,SUPER_ADMINS,USERS , This API is used for getting paged questions"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Questions returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<Question>>> getAll(@RequestParam(required = false) Integer subjectId,
                                                               @RequestParam(required = false, defaultValue = "10") int size,
@@ -77,9 +85,11 @@ public class QuestionController {
         return ResponseEntity.ok(new ResponseDTO<>(questionPages));
     }
 
-    @Operation(summary = "This API is used for deleting a question", responses = {
-            @ApiResponse(responseCode = "200", description = "Question deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used for deleting a question"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Question deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO<Void>> delete(@PathVariable String id) {
         questionService.delete(id);

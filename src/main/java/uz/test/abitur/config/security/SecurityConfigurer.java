@@ -27,7 +27,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import uz.test.abitur.dtos.AppErrorDTO;
 import uz.test.abitur.repositories.AuthUserRepository;
-import uz.test.abitur.utils.interceptors.LoggingInterceptor;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -64,19 +63,6 @@ public class SecurityConfigurer {
                 .addFilterBefore(new JWTAuthenticationFilter(jwtUtils, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder,
-                                     LoggingInterceptor loggingInterceptor) {
-        return restTemplateBuilder
-                .additionalInterceptors(loggingInterceptor)
-                .setConnectTimeout(Duration.ofSeconds(10))
-                .setReadTimeout(Duration.ofSeconds(10))
-                .build();
-    }
-
-
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {

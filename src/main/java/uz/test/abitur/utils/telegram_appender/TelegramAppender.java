@@ -1,4 +1,4 @@
-package uz.test.abitur.utils.interceptors;
+package uz.test.abitur.utils.telegram_appender;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
@@ -7,7 +7,6 @@ import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,6 +29,5 @@ public class TelegramAppender extends AppenderBase<LoggingEvent> {
         String logMessage = loggingEvent.toString();
         SendMessage sendMessage = new SendMessage(chatID, logMessage);
         telegramBot.execute(sendMessage);
-
     }
 }

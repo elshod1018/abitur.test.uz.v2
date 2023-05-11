@@ -55,12 +55,15 @@ public class SolveQuestionService {
     }
 
     private void save(Integer subjectId, Integer testSessionId, List<String> questionsIds) {
-        questionsIds.forEach(questionId -> {
-            solveQuestionRepository.save(SolveQuestion.builder()
-                    .questionId(questionId)
-                    .subjectId(subjectId)
-                    .testSessionId(testSessionId)
-                    .build());
-        });
+        questionsIds.forEach(questionId ->
+                solveQuestionRepository.save(SolveQuestion.builder()
+                        .questionId(questionId)
+                        .subjectId(subjectId)
+                        .testSessionId(testSessionId)
+                        .build()));
+    }
+
+    public int getCount(Integer testSessionId, Integer firstSubjectId) {
+        return solveQuestionRepository.countByTestSessionIdAndSubjectId(testSessionId, firstSubjectId);
     }
 }

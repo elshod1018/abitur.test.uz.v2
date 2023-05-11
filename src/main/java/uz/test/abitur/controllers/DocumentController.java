@@ -36,17 +36,21 @@ import static uz.test.abitur.utils.UrlUtils.BASE_USERS_URL;
 public class DocumentController {
     private final DocumentService documentService;
 
-    @Operation(summary = "This API is used for download documents", responses = {
-            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For AUTHENTICATED users, This API is used for download documents"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/download/{name:.*}")
     public ResponseEntity<ResponseDTO<File>> download(@PathVariable String name) throws IOException {
         File file = documentService.downloadFile(name);
         return ResponseEntity.ok(new ResponseDTO<>(file));
     }
-    @Operation(summary = "This API is used for get documents", responses = {
-            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @Operation(summary = "For AUTHENTICATED users, This API is used for get documents"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
     @GetMapping("/get/{id:.*}")
     public ResponseEntity<ResponseDTO<Document>> download(@PathVariable Integer id) throws IOException {
         Document document = documentService.getFile(id);

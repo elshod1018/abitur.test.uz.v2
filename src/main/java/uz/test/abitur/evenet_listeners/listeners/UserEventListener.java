@@ -1,6 +1,7 @@
 package uz.test.abitur.evenet_listeners.listeners;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -15,7 +16,7 @@ public class UserEventListener {
     private final TwilioService twilioService;
 
     @Async
-    @TransactionalEventListener(value = SendSMSEvent.class)
+    @EventListener(value = SendSMSEvent.class)
     public void sendSMSEventListener(SendSMSEvent event) {
         String phoneNumber = event.getPhoneNumber();
         String smsCode = event.getSmsCode();

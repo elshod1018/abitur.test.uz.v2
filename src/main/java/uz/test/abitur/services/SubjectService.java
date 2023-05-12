@@ -44,6 +44,12 @@ public class SubjectService {
     }
 
     public Subject update(SubjectUpdateDTO dto) {
+        if (dto.isMandatory()) {
+            List<Subject> mandatorySubjects = getMandatorySubjects();
+            if (mandatorySubjects.size() == 3) {
+                throw new RuntimeException("You can't add more than 3 mandatory subjects");
+            }
+        }
         Subject subject = findById(dto.getId());
         dto.setCode(dto.getCode().toUpperCase());
         findByCodeAndMandatory(dto.getCode(), dto.isMandatory());
@@ -77,5 +83,11 @@ public class SubjectService {
         }
         if (mandatorySubject != null)
             BaseUtils.QUESTION_COUNT_MAP.put("mandatorySubject", mandatorySubject);
+    }
+
+    public QuestionCountDTO getCount() {
+        return new QuestionCountDTO(
+                BaseUtils.QUESTION_COUNT_MAP.get("mainSubject"),
+                BaseUtils.QUESTION_COUNT_MAP.get("mandatorySubject"));
     }
 }

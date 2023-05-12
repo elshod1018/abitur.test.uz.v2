@@ -26,7 +26,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
-    <appender name="TelegramAppender" class="uz.test.abitur.utils.interceptors.TelegramAppender">
+    <appender name="TelegramAppender" class="uz.test.abitur.utils.telegram_appender.TelegramAppender">
     </appender>
 
     <root level="info">

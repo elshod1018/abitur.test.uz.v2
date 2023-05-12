@@ -1,5 +1,7 @@
 package uz.test.abitur.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -62,7 +64,7 @@ public class SubjectController {
     )
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<Subject>>> getAll(@RequestParam(required = false, defaultValue = "10") Integer size,
-                                                             @RequestParam(required = false, defaultValue = "0") Integer page) {
+                                                             @RequestParam(required = false, defaultValue = "0") Integer page) throws JsonProcessingException {
         Sort sort = Sort.by(Sort.Direction.DESC, "mandatory")
                 .and(Sort.by(Sort.Direction.DESC, "name"));
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -91,6 +93,7 @@ public class SubjectController {
         subjectService.delete(id);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Subject Deleted Successfully"));
     }
+
     @Operation(summary = "For ADMINS , SUPER_ADMINS , This API is used to add count of questions for Subject for solve test"
 //            , responses = {
 //            @ApiResponse(responseCode = "200", description = "Added", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
@@ -100,6 +103,17 @@ public class SubjectController {
     public ResponseEntity<ResponseDTO<Void>> addCount(QuestionCountDTO dto) {
         subjectService.addCount(dto);
         return ResponseEntity.ok(new ResponseDTO<>(null, "Count added Successfully"));
+    }
+
+    @Operation(summary = "For USERS , This API is used to get count of questions for Subject for solve test"
+//            , responses = {
+//            @ApiResponse(responseCode = "200", description = "Returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
+    )
+    @PostMapping("/get/count")
+    public ResponseEntity<ResponseDTO<QuestionCountDTO>> getCount() {
+        QuestionCountDTO dto = subjectService.getCount();
+        return ResponseEntity.ok(new ResponseDTO<>(dto, "Count of questions "));
     }
 
 }

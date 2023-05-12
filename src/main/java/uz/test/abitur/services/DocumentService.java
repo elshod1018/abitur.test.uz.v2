@@ -6,13 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
 import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.domains.Document;
-import uz.test.abitur.evenet_listeners.events.DocumentSavedEvent;
 import uz.test.abitur.repositories.DocumentRepository;
 import uz.test.abitur.services.firebase.FirebaseService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 import static uz.test.abitur.utils.BaseUtils.generateFileName;

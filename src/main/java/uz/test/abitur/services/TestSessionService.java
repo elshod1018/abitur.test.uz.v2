@@ -12,6 +12,7 @@ import uz.test.abitur.dtos.subject.SubjectCreateDTO;
 import uz.test.abitur.dtos.subject.SubjectUpdateDTO;
 import uz.test.abitur.dtos.test.TestSessionCreateDTO;
 import uz.test.abitur.evenet_listeners.events.TestSessionCreatedEvent;
+import uz.test.abitur.evenet_listeners.events.TestSessionFinishedEvent;
 import uz.test.abitur.repositories.SubjectRepository;
 import uz.test.abitur.repositories.TestSessionRepository;
 
@@ -68,4 +69,19 @@ public class TestSessionService {
         return testSession;
     }
 
+    public TestSession findActiveTestSession() {
+        return testSessionRepository.findByUserId(sessionUser.id());
+    }
+
+    public void finishTest(TestSession testSession) {
+        testSession.setFinished(true);
+        testSession.setFinishedAt(LocalDateTime.now());
+        testSessionRepository.save(testSession);
+        applicationEventPublisher.publishEvent(new TestSessionFinishedEvent(testSession));
+    }
+
+    public TestSession findById(Integer testSessionId) {
+        return testSessionRepository.findTestSessionById(testSessionId)
+                .orElseThrow(() -> new RuntimeException("Test session not found by id " + testSessionId));
+    }
 }

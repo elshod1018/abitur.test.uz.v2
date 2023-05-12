@@ -1,20 +1,14 @@
 package uz.test.abitur.services;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uz.test.abitur.config.security.SessionUser;
-import uz.test.abitur.domains.SolveQuestion;
-import uz.test.abitur.domains.Subject;
-import uz.test.abitur.domains.TestSession;
-import uz.test.abitur.dtos.test.TestSessionCreateDTO;
-import uz.test.abitur.evenet_listeners.events.TestSessionCreatedEvent;
+import uz.test.abitur.domains.*;
+import uz.test.abitur.dtos.test.SolveQuestionResultDTO;
 import uz.test.abitur.repositories.SolveQuestionRepository;
-import uz.test.abitur.repositories.TestSessionRepository;
 import uz.test.abitur.utils.BaseUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,25 +25,27 @@ public class SolveQuestionService {
         Integer fourthSubjectId = testSession.getFourthSubjectId();
         Integer fifthSubjectId = testSession.getFifthSubjectId();
         Integer testSessionId = testSession.getId();
-        List<String> subjectQuestions;
-        if (Objects.nonNull(firstSubjectId)) {
-            subjectQuestions = questionService.findNRandQuestionsBySubjectId(firstSubjectId, BaseUtils.QUESTION_COUNT_MAP.get("mainSubject"));
+        List<String> subjectQuestions;//questions ids
+        Integer mainSubject = BaseUtils.QUESTION_COUNT_MAP.get("mainSubject");
+        if (!Objects.isNull(firstSubjectId)) {
+            subjectQuestions = questionService.findNRandQuestionsBySubjectId(firstSubjectId, mainSubject);
             save(firstSubjectId, testSessionId, subjectQuestions);
         }
-        if (Objects.nonNull(secondSubjectId)) {
-            subjectQuestions = questionService.findNRandQuestionsBySubjectId(secondSubjectId, BaseUtils.QUESTION_COUNT_MAP.get("mainSubject"));
+        if (!Objects.isNull(secondSubjectId)) {
+            subjectQuestions = questionService.findNRandQuestionsBySubjectId(secondSubjectId, mainSubject);
             save(secondSubjectId, testSessionId, subjectQuestions);
         }
-        if (Objects.nonNull(thirdSubjectId)) {
-            subjectQuestions = questionService.findNRandQuestionsBySubjectId(thirdSubjectId, BaseUtils.QUESTION_COUNT_MAP.get("mandatorySubject"));
+        Integer mandatorySubject = BaseUtils.QUESTION_COUNT_MAP.get("mandatorySubject");
+        if (!Objects.isNull(thirdSubjectId)) {
+            subjectQuestions = questionService.findNRandQuestionsBySubjectId(thirdSubjectId, mandatorySubject);
             save(thirdSubjectId, testSessionId, subjectQuestions);
         }
-        if (Objects.nonNull(fourthSubjectId)) {
-            subjectQuestions = questionService.findNRandQuestionsBySubjectId(fourthSubjectId, BaseUtils.QUESTION_COUNT_MAP.get("mandatorySubject"));
+        if (!Objects.isNull(fourthSubjectId)) {
+            subjectQuestions = questionService.findNRandQuestionsBySubjectId(fourthSubjectId, mandatorySubject);
             save(fourthSubjectId, testSessionId, subjectQuestions);
         }
-        if (Objects.nonNull(fifthSubjectId)) {
-            subjectQuestions = questionService.findNRandQuestionsBySubjectId(fifthSubjectId, BaseUtils.QUESTION_COUNT_MAP.get("mandatorySubject"));
+        if (!Objects.isNull(fifthSubjectId)) {
+            subjectQuestions = questionService.findNRandQuestionsBySubjectId(fifthSubjectId, mandatorySubject);
             save(fifthSubjectId, testSessionId, subjectQuestions);
         }
     }
@@ -64,6 +60,31 @@ public class SolveQuestionService {
     }
 
     public int getCount(Integer testSessionId, Integer firstSubjectId) {
-        return solveQuestionRepository.countByTestSessionIdAndSubjectId(testSessionId, firstSubjectId);
+        return solveQuestionRepository.getCount(testSessionId, firstSubjectId);
+    }
+
+    public Page<SolveQuestionResultDTO> getResultDTO(Integer testSessionId, Integer subjectId, Pageable pageable) {
+        Page<SolveQuestionResultDTO> all = solveQuestionRepository.getPageableSolveQuestionDTO(testSessionId, subjectId, pageable);
+        all.get().forEach(solveQuestionResultDTO -> {
+            Question question = solveQuestionResultDTO.getQuestion();
+            setNull(question.getAnswers());
+        });
+        return all;
+    }
+
+    private void setNull(List<Answer> answers) {
+        answers.forEach(answer -> answer.setIsTrue(null));
+    }
+
+    public void updateUserAnswer(Integer testSessionId, Integer subjectId, String questionId, String answerId) {
+        solveQuestionRepository.findByTestSessionIdAndSubjectIdAndQuestionId(testSessionId, subjectId, questionId)
+                .ifPresent(solveQuestion -> {
+                    solveQuestion.setUserAnswerId(answerId);
+                    solveQuestionRepository.save(solveQuestion);
+                });
+    }
+
+    public List<Boolean> getListOfAnswerTrueOrFalse(Integer testSessionId, Integer subjectId){
+        return solveQuestionRepository.getListOfAnswerTrueOrFalse(testSessionId, subjectId);
     }
 }

@@ -25,7 +25,7 @@ public class Question extends Auditable {
     @Column(nullable = false)
     private String text;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Answer> answers;
 
     @Builder(builderMethodName = "childBuilder")

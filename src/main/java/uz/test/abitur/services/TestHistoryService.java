@@ -30,6 +30,7 @@ public class TestHistoryService {
     private final TestHistoryRepository testHistoryRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final SessionUser sessionUser;
+    private final AuthUserService authUserService;
 
     public TestHistory create(TestSession testSession) {
         Integer testSessionId = testSession.getId();
@@ -78,7 +79,7 @@ public class TestHistoryService {
 
         List<TestHistoryPDFGenerateDTO> forPDF = new ArrayList<>();
         ParagraphDTO paragraphDTO = new ParagraphDTO();
-        AuthUser user = sessionUser.user();
+        AuthUser user = authUserService.findById(testSession.getUserId());
         paragraphDTO.setFirstName(user.getFirstName());
         paragraphDTO.setLastName(user.getLastName());
         paragraphDTO.setPhoneNumber(user.getPhoneNumber());

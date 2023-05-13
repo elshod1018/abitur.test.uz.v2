@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 import uz.test.abitur.domains.Document;
 import uz.test.abitur.domains.TestHistory;
 import uz.test.abitur.domains.TestSession;
@@ -37,7 +36,6 @@ public class TestEventListener {
     public void testSessionCreatedEventListener(TestSessionCreatedEvent event) {
         TestSession testSession = event.getTestSession();
         if (!Objects.isNull(testSession)) {
-            System.out.println(testSession);
             solveQuestionService.create(testSession);
             testHistoryService.create(testSession);
         }
@@ -49,7 +47,6 @@ public class TestEventListener {
         TestSession testSession = event.getTestSession();
         if (!Objects.isNull(testSession)) {
             testHistoryService.finish(testSession);
-            log.info("Test session finished => " + testSession.getId());
         }
     }
 
@@ -64,18 +61,5 @@ public class TestEventListener {
             return CompletableFuture.completedFuture(new FileGeneratedEvent(file, testSessionId));
         }
         return null;
-    }
-
-    @Async
-    @EventListener(value = FileGeneratedEvent.class)
-    public void fileCreatedEventListener(FileGeneratedEvent event) {
-        File file = event.getFile();
-        Document document = documentService.saveFileDocument(file);
-
-        TestHistory testHistory = testHistoryService.findByTestSessionId(event.getTestSessionId());
-        if (!Objects.isNull(testHistory)) {
-            testHistory.setDocumentId(document.getGeneratedName());
-            testHistoryService.update(testHistory);
-        }
     }
 }

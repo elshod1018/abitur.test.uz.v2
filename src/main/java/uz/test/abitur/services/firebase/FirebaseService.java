@@ -50,7 +50,6 @@ public class FirebaseService {
         service.create(getBlobInfo(generatedName, file.getContentType()), file.getBytes());
         return String.format(DOWNLOAD_URL, generatedName);
     }
-
     public String upload(File file, String generatedName) throws IOException {
         Storage service = getStorage();
         try (FileInputStream fis = new FileInputStream(file)) {

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
 import org.springframework.web.multipart.MultipartFile;
 import uz.test.abitur.domains.Document;
+import uz.test.abitur.evenet_listeners.events.DocumentSavedEvent;
+import uz.test.abitur.evenet_listeners.events.FileUploadedEvent;
 import uz.test.abitur.repositories.DocumentRepository;
 import uz.test.abitur.services.firebase.FirebaseService;
 
@@ -40,7 +42,7 @@ public class DocumentService {
                 .size(size)
                 .build();
         documentRepository.save(document);
-        applicationEventPublisher.publishEvent(new DocumentSavedEvent(file, document));
+        applicationEventPublisher.publishEvent(new FileUploadedEvent(file, document));
         return document;
     }
 
@@ -56,24 +58,24 @@ public class DocumentService {
                 .size(file.length())
                 .build();
         documentRepository.save(document);
+        applicationEventPublisher.publishEvent(new DocumentSavedEvent(file, document));
         return document;
     }
 
     public File downloadFile(String generatedName) throws IOException {
         return firebaseService.download(generatedName);
     }
-
-    public Document getByGeneratedName(String generatedName) {
-        return documentRepository.findByGeneratedName(generatedName)
-                .orElseThrow(() -> new RuntimeException("Document Not found"));
-    }
-
     public Document update(Document document) {
         return documentRepository.save(document);
     }
 
-    public Document getFile(Integer id) {
+    public Document getById(Integer id) {
         return documentRepository.findDocumetById(id)
                 .orElseThrow(() -> new RuntimeException("Document Not found by id: '%s'".formatted(id)));
+    }
+
+    public Document findByGeneratedName(String name) {
+        return documentRepository.findByGeneratedName(name)
+                .orElseThrow(() -> new RuntimeException("Document Not found by name: '%s'".formatted(name)));
     }
 }

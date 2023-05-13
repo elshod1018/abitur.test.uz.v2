@@ -9,6 +9,7 @@ import uz.test.abitur.dtos.test.SolveQuestionResultDTO;
 import uz.test.abitur.repositories.SolveQuestionRepository;
 import uz.test.abitur.utils.BaseUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,7 +85,18 @@ public class SolveQuestionService {
                 });
     }
 
-    public List<Boolean> getListOfAnswerTrueOrFalse(Integer testSessionId, Integer subjectId){
-        return solveQuestionRepository.getListOfAnswerTrueOrFalse(testSessionId, subjectId);
+    public List<Boolean> getListOfAnswerTrueOrFalse(Integer testSessionId, Integer subjectId) {
+        List<SolveQuestion> list = solveQuestionRepository.findByTestSessionIdAndSubjectId(testSessionId, subjectId);
+        List<Boolean> result = new ArrayList<>();
+        list.forEach(solveQuestion -> {
+            Question question = questionService.getById(solveQuestion.getQuestionId());
+            List<Answer> answers = question.getAnswers();
+            answers.forEach(answer -> {
+                if (answer.getIsTrue()) {
+                    result.add(answer.getId().equals(solveQuestion.getUserAnswerId()));
+                }
+            });
+        });
+        return result;
     }
 }

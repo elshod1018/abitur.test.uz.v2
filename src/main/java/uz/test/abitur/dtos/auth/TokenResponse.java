@@ -1,6 +1,7 @@
 package uz.test.abitur.dtos.auth;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 

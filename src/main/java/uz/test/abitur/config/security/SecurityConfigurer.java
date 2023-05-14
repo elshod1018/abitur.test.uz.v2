@@ -27,6 +27,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import uz.test.abitur.dtos.AppErrorDTO;
 import uz.test.abitur.repositories.AuthUserRepository;
+import uz.test.abitur.utils.UrlUtils;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -44,11 +45,17 @@ public class SecurityConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
+                .cors()
+                .configurationSource(corsConfigurationSource()).and()
+//                .disable()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/**")//for test
+                .requestMatchers("/swagger-ui.html",
+                        "/swagger-ui*/**",
+                        "/swagger-ui*/*swagger-initializer.js",
+                        "/v3/api-docs*/**",
+                        UrlUtils.BASE_AUTH_URL + "/**",
+                        "/error")
                 .permitAll()
                 .anyRequest()
                 .fullyAuthenticated()
@@ -63,6 +70,7 @@ public class SecurityConfigurer {
                 .addFilterBefore(new JWTAuthenticationFilter(jwtUtils, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
@@ -99,11 +107,20 @@ public class SecurityConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:8080",
+                "https://abiturtestuzv2.up.railway.app",
+                "*"
+        ));
         configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         configuration.setAllowedMethods(List.of(
                 "GET", "POST", "DELETE", "PUT"
         ));
-
+        configuration.setAllowedHeaders(List.of("*",
+                "Accept",
+                "Content-Type",
+                "Authorization"
+        ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

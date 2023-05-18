@@ -50,11 +50,11 @@ public class SecurityConfigurer {
 //                .disable()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/swagger-ui.html",
+                .requestMatchers(UrlUtils.BASE_AUTH_URL + "/**",
+                        "/swagger-ui.html",
                         "/swagger-ui*/**",
                         "/swagger-ui*/*swagger-initializer.js",
                         "/v3/api-docs*/**",
-                        UrlUtils.BASE_AUTH_URL + "/**",
                         "/error")
                 .permitAll()
                 .anyRequest()
@@ -126,7 +126,6 @@ public class SecurityConfigurer {
         return source;
     }
 
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -140,12 +139,10 @@ public class SecurityConfigurer {
         return new ProviderManager(authenticationProvider());
     }
 
-
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> new UserDetails(authUserRepository.findByPhoneNumber(username)
                 .orElse(null));
     }
-
 
 }

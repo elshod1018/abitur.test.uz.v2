@@ -130,11 +130,9 @@ public class AuthUserService {
         authUserRepository.save(user);
     }
 
-    public AuthUser updateProfile(UserProfileUpdateDTO dto, MultipartFile file) throws IOException {
+    public AuthUser updateProfile(UserProfileUpdateDTO dto){
         AuthUser user = sessionUser.user();
         USER_MAPPER.updateUsersProfileFromDTO(dto, user);
-        Document document = documentService.saveMultipartDocument(file);
-        user.setProfilePhotoGeneratedName(document.getGeneratedName());
         return authUserRepository.save(user);
     }
 
@@ -149,6 +147,12 @@ public class AuthUserService {
             return;
         }
         throw new RuntimeException("Code is invalid");
+    }
 
+    public AuthUser updateProfilePhoto(MultipartFile file) throws IOException {
+        AuthUser user = sessionUser.user();
+        Document document = documentService.saveMultipartDocument(file);
+        user.setProfilePhotoGeneratedName(document.getGeneratedName());
+        return authUserRepository.save(user);
     }
 }

@@ -1,6 +1,9 @@
 package uz.test.abitur.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -27,11 +30,9 @@ import static uz.test.abitur.utils.UrlUtils.BASE_DOCUMENTS_URL;
 public class DocumentController {
     private final DocumentService documentService;
 
-    @Operation(summary = "For AUTHENTICATED users, This API is used for download documents"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For AUTHENTICATED users, This API is used for download documents", responses = {
+            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/download/{name:.*}")
     public ResponseEntity<InputStreamResource> download(@PathVariable String name) throws IOException {
         File file = documentService.downloadFile(name);
@@ -44,11 +45,9 @@ public class DocumentController {
                 .body(resource);
     }
 
-    @Operation(summary = "For AUTHENTICATED users, This API is used for get documents"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For AUTHENTICATED users, This API is used for get documents", responses = {
+            @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/{id:.*}")
     public ResponseEntity<ResponseDTO<Document>> download(@PathVariable Integer id) throws IOException {
         Document document = documentService.getById(id);

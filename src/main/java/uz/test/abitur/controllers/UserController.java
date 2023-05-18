@@ -41,11 +41,9 @@ public class UserController {
 
     private final AuthUserService authUserService;
 
-    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for get a User for profile "
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "User returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for get a User for profile ", responses = {
+            @ApiResponse(responseCode = "200", description = "User returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/{id:.*}")
     public ResponseEntity<ResponseDTO<AuthUser>> get(@PathVariable String id) {
         AuthUser user = authUserService.findById(id);
@@ -53,11 +51,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @Operation(summary = "For SUPER_ADMINS , This API is used for get paged users"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "Users returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For SUPER_ADMINS , This API is used for get paged users", responses = {
+            @ApiResponse(responseCode = "200", description = "Users returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<AuthUser>>> getAll(@RequestParam(required = false) Status status,
                                                               @RequestParam(required = false, defaultValue = "15") Integer size,
@@ -69,33 +65,36 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @Operation(summary = "For SUPER_ADMINS , This API is used for update users"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "User updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For SUPER_ADMINS , This API is used for update users", responses = {
+            @ApiResponse(responseCode = "200", description = "User updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @PutMapping("/update")
     public ResponseEntity<ResponseDTO<AuthUser>> updateByAdmin(@RequestBody UserUpdateDTO dto) {
         AuthUser user = authUserService.update(dto);
         return ResponseEntity.ok(new ResponseDTO<>(user, "User Updated Successfully"));
     }
 
-    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for update profile"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "Profile updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
-    @PutMapping("/profile/update")
-    public ResponseEntity<ResponseDTO<AuthUser>> updateProfile(@RequestBody UserProfileUpdateDTO dto, MultipartFile file) throws IOException {
-        AuthUser user = authUserService.updateProfile(dto, file);
+    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for update profile", responses = {
+            @ApiResponse(responseCode = "200", description = "Profile updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @PutMapping(value = "/profile/update")
+    public ResponseEntity<ResponseDTO<AuthUser>> updateProfile(@RequestBody UserProfileUpdateDTO dto) throws IOException {
+        AuthUser user = authUserService.updateProfile(dto);
         return ResponseEntity.ok(new ResponseDTO<>(user, "User Updated Successfully"));
     }
 
-    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for delete their accounts"
-//            , responses = {
-//            @ApiResponse(responseCode = "200", description = "User deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-//            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
-    )
+    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for update profile photo", responses = {
+            @ApiResponse(responseCode = "200", description = "Profile updated", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
+    @PutMapping(value = "/profile/photo", consumes = "multipart/form-data")
+    public ResponseEntity<ResponseDTO<AuthUser>> updateProfilePhoto(@RequestParam MultipartFile file) throws IOException {
+        AuthUser user = authUserService.updateProfilePhoto(file);
+        return ResponseEntity.ok(new ResponseDTO<>(user, "User Updated Successfully"));
+    }
+
+    @Operation(summary = "For ADMINS , USERS , SUPER_ADMINS , This API is used for delete their accounts", responses = {
+            @ApiResponse(responseCode = "200", description = "User deleted", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDTO<Void>> delete() {
         authUserService.delete();

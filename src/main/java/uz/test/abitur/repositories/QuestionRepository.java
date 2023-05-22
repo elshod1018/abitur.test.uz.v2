@@ -18,4 +18,7 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
 
     @Query("select q from Question q where q.deleted = false")
     Page<Question> getAll(Pageable pageable);
+
+    @Query("select (count(q) > 0) from Question q where q.deleted = false and q.subject.id = ?1")
+    boolean existsBySubjectId(Integer id);
 }

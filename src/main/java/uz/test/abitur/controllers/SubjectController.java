@@ -58,10 +58,10 @@ public class SubjectController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<Subject>>> getAll(@RequestParam(required = false, defaultValue = "10") Integer size,
-                                                             @RequestParam(required = false, defaultValue = "0") Integer page) throws JsonProcessingException {
+                                                             @RequestParam(required = false, defaultValue = "1") Integer page) throws JsonProcessingException {
         Sort sort = Sort.by(Sort.Direction.DESC, "mandatory")
                 .and(Sort.by(Sort.Direction.DESC, "name"));
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Subject> subjectsList = subjectService.getAll(pageable);
         return ResponseEntity.ok(new ResponseDTO<>(subjectsList));
     }
@@ -96,7 +96,7 @@ public class SubjectController {
     @Operation(summary = "For USERS , This API is used to get count of questions for Subject for solve test", responses = {
             @ApiResponse(responseCode = "200", description = "Returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
-    @PostMapping("/get/count")
+    @GetMapping("/get/count")
     public ResponseEntity<ResponseDTO<QuestionCountDTO>> getCount() {
         QuestionCountDTO dto = subjectService.getCount();
         return ResponseEntity.ok(new ResponseDTO<>(dto, "Count of questions "));

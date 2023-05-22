@@ -20,6 +20,7 @@ import static uz.test.abitur.mapper.SubjectMapper.SUBJECT_MAPPER;
 @RequiredArgsConstructor
 public class SubjectService {
     private final SubjectRepository subjectRepository;
+    private final QuestionService questionService;
 
     public Subject create(SubjectCreateDTO dto) {
         dto.setCode(dto.getCode().toUpperCase());
@@ -58,6 +59,10 @@ public class SubjectService {
     }
 
     public void delete(Integer id) {
+        boolean existsBySubjectId = questionService.existsBySubjectId(id);
+        if (existsBySubjectId) {
+            throw new RuntimeException("You can't delete this subject, because it has questions");
+        }
         Subject subject = findById(id);
         subject.setDeleted(true);
         subjectRepository.save(subject);

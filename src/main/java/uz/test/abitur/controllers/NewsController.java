@@ -57,9 +57,9 @@ public class NewsController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/all")
     public ResponseEntity<ResponseDTO<Page<News>>> getAll(@RequestParam(required = false, defaultValue = "15") Integer size,
-                                                          @RequestParam(required = false, defaultValue = "0") Integer page) {
+                                                          @RequestParam(required = false, defaultValue = "1") Integer page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<News> newsList = newsService.getAll(pageable);
         return ResponseEntity.ok(new ResponseDTO<>(newsList));
     }

@@ -2,6 +2,9 @@ package uz.test.abitur.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.test.abitur.config.security.SessionUser;
 import uz.test.abitur.domains.AuthUser;
@@ -146,5 +149,9 @@ public class TestHistoryService {
 
     public TestHistory update(TestHistory testHistory) {
         return testHistoryRepository.save(testHistory);
+    }
+
+    public Page<TestHistory> findAll(Pageable pageable) {
+        return testHistoryRepository.findAll(pageable);
     }
 }

@@ -1,6 +1,9 @@
 package uz.test.abitur.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
@@ -46,6 +49,7 @@ public class DocumentService {
         return document;
     }
 
+
     public Document saveFileDocument(File file) {
         String originalFilename = file.getName();
         String extension = getExtension(Objects.requireNonNull(originalFilename));
@@ -65,15 +69,20 @@ public class DocumentService {
     public File downloadFile(String generatedName) throws IOException {
         return firebaseService.download(generatedName);
     }
+
+
+    @CacheEvict(value = "documents", allEntries = true)
     public Document update(Document document) {
         return documentRepository.save(document);
     }
 
+    @Cacheable(value = "documents", key = "#id")
     public Document getById(Integer id) {
         return documentRepository.findDocumetById(id)
                 .orElseThrow(() -> new RuntimeException("Document Not found by id: '%s'".formatted(id)));
     }
 
+    @Cacheable(value = "documents", key = "#name")
     public Document findByGeneratedName(String name) {
         return documentRepository.findByGeneratedName(name)
                 .orElseThrow(() -> new RuntimeException("Document Not found by name: '%s'".formatted(name)));

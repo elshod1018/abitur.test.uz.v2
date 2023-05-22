@@ -9,6 +9,9 @@ spring:
       ddl-auto: update
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
+  cache:
+    redis:
+      enable-statistics: true
 jwt:
   access:
     token:

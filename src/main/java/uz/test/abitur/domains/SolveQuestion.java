@@ -3,6 +3,9 @@ package uz.test.abitur.domains;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Setter
@@ -10,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SolveQuestion{
+public class SolveQuestion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

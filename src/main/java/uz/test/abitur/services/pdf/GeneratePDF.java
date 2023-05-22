@@ -18,6 +18,7 @@ import uz.test.abitur.dtos.pdf.TestHistoryPDFGenerateDTO;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -38,9 +39,10 @@ public class GeneratePDF {
         doc.add(paragraph);
         paragraph = new Paragraph("Phone number: " + phoneNumber);
         doc.add(paragraph);
-        paragraph = new Paragraph("Started at: " + startedAt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        paragraph = new Paragraph("Started at: " + startedAt.format(formatter));
         doc.add(paragraph);
-        paragraph = new Paragraph("Finished at: " + finishedAt);
+        paragraph = new Paragraph("Finished at: " + finishedAt.format(formatter));
         doc.add(paragraph);
         paragraph = new Paragraph("Total score: %.5s".formatted(scores.stream().mapToDouble(Double::valueOf).sum()));
         doc.add(paragraph);

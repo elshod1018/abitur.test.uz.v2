@@ -41,7 +41,7 @@ public class TestController {
     private final TestSessionService testSessionService;
     private final SolveQuestionService solveQuestionService;
 
-    @Operation(summary = "For USERS , This API is used for test", responses = {
+    @Operation(summary = "For USERS , This API is used for start test", responses = {
             @ApiResponse(responseCode = "200", description = "Test Started", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
     )
@@ -65,10 +65,10 @@ public class TestController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
     )
     @GetMapping(value = "/get/{testSessionId:.*}/{subjectId:.*}")
-    public ResponseEntity<ResponseDTO<Page<SolveQuestionResultDTO>>> get(@PathVariable Integer testSessionId,
-                                                                         @PathVariable Integer subjectId,
-                                                                         @RequestParam(name = "questionNumber", defaultValue = "1")
-                                                                         @Min(value = 1) @Max(50) Integer questionNumber) {
+    public ResponseEntity<ResponseDTO<Page<SolveQuestionResultDTO>>> getQuestion(@PathVariable Integer testSessionId,
+                                                                                 @PathVariable Integer subjectId,
+                                                                                 @RequestParam(name = "questionNumber", defaultValue = "1")
+                                                                                 @Min(value = 1) @Max(50) Integer questionNumber) {
         Pageable pageable = PageRequest.of(questionNumber - 1, 1);
         Page<SolveQuestionResultDTO> solveQuestionResultDTOS = solveQuestionService.getResultDTO(testSessionId, subjectId, pageable);
         return ResponseEntity.ok(new ResponseDTO<>(solveQuestionResultDTOS));
@@ -79,10 +79,10 @@ public class TestController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
     )
     @PutMapping(value = "/choose/{testSessionId:.*}/{subjectId:.*}/{questionId:.*}/{answerId:.*}")
-    public ResponseEntity<ResponseDTO<Page<Void>>> get(@PathVariable Integer testSessionId,
-                                                       @PathVariable Integer subjectId,
-                                                       @PathVariable String questionId,
-                                                       @PathVariable String answerId) {
+    public ResponseEntity<ResponseDTO<Page<Void>>> chooseUserAnswer(@PathVariable Integer testSessionId,
+                                                                    @PathVariable Integer subjectId,
+                                                                    @PathVariable String questionId,
+                                                                    @PathVariable String answerId) {
         TestSession testSession = testSessionService.findById(testSessionId);
         if (testSession.getFinishedAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Test session is finished");
@@ -96,7 +96,7 @@ public class TestController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))}
     )
     @PostMapping("/finish")
-    public ResponseEntity<ResponseDTO<Void>> create() {
+    public ResponseEntity<ResponseDTO<Void>> finish() {
         TestSession testSession = testSessionService.findActiveTestSession();
         if (Objects.isNull(testSession)) {
             throw new RuntimeException("You don't have started test");

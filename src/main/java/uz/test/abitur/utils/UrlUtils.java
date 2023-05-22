@@ -25,4 +25,6 @@ public interface UrlUtils {
 
     /* Test Session */
     String BASE_TESTS_URL = BASE_URL + "/tests";
+    /* Test History */
+    String BASE_TEST_HISTORIES_URL = BASE_URL + "/test/histories";
 }

@@ -33,7 +33,6 @@ import static uz.test.abitur.mapper.UserMapper.USER_MAPPER;
 @Service
 @RequiredArgsConstructor
 public class AuthUserService {
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final AuthUserRepository authUserRepository;

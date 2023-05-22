@@ -9,6 +9,7 @@ import uz.test.abitur.enums.Language;
 import uz.test.abitur.enums.Role;
 import uz.test.abitur.enums.Status;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthUser extends Auditable {
+public class AuthUser extends Auditable implements Serializable {
     @Id
     @UuidGenerator
     private String id;

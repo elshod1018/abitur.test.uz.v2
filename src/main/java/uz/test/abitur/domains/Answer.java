@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Answer {
+public class Answer implements Serializable {
     @Id
     @UuidGenerator
     private String id;

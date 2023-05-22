@@ -33,7 +33,7 @@ public class QuestionService {
         this.answerService = answerService;
     }
 
-    @CacheEvict(value = "questionList", allEntries = true)
+    /*@CacheEvict(value = "questionList", allEntries = true)*/
     public Question create(QuestionCreateDTO dto) {
         Subject subject = subjectService.findById(dto.getSubjectId());
         List<Answer> answers = answerService.create(dto);
@@ -45,7 +45,7 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
-    @CachePut(value = "questions", key = "#dto.id")
+   /* @CachePut(value = "questions", key = "#dto.id")*/
     public Question update(QuestionUpdateDTO dto) {
         Question question = getById(dto.getId());
         Integer dtoSubjectId = dto.getSubjectId();
@@ -60,13 +60,13 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
-    @Cacheable(value = "questions", key = "#id")
+    /*@Cacheable(value = "questions", key = "#id")*/
     public Question getById(String id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Question not found with id: %s".formatted(id)));
     }
 
-    @Cacheable(value = "questionList", key = "#subjectId+'_'+#pageable.pageNumber")
+   /* @Cacheable(value = "questionList", key = "#subjectId+'_'+#pageable.pageNumber")*/
     public Page<Question> getAll(Integer subjectId, Pageable pageable) {
         if (subjectId != null) {
             return questionRepository.getAllBySubjectId(subjectId, pageable);
@@ -74,7 +74,7 @@ public class QuestionService {
         return questionRepository.getAll(pageable);
     }
 
-    @CacheEvict(cacheNames = {"questions", "questionList"}, key = "#id", allEntries = true)
+   /* @CacheEvict(cacheNames = {"questions", "questionList"}, key = "#id", allEntries = true)*/
     public void delete(String id) {
         Question question = getById(id);
         question.setDeleted(true);

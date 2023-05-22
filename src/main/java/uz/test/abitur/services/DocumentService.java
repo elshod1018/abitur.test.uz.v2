@@ -71,18 +71,18 @@ public class DocumentService {
     }
 
 
-    @CacheEvict(value = "documents", allEntries = true)
+    /*@CacheEvict(value = "documents", allEntries = true)*/
     public Document update(Document document) {
         return documentRepository.save(document);
     }
 
-    @Cacheable(value = "documents", key = "#id")
+    /*@Cacheable(value = "documents", key = "#id")*/
     public Document getById(Integer id) {
         return documentRepository.findDocumetById(id)
                 .orElseThrow(() -> new RuntimeException("Document Not found by id: '%s'".formatted(id)));
     }
 
-    @Cacheable(value = "documents", key = "#name")
+    /*@Cacheable(value = "documents", key = "#name")*/
     public Document findByGeneratedName(String name) {
         return documentRepository.findByGeneratedName(name)
                 .orElseThrow(() -> new RuntimeException("Document Not found by name: '%s'".formatted(name)));

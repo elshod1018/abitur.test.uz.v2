@@ -47,7 +47,6 @@ public class GeneratePDF {
         paragraph = new Paragraph("Total score: %.5s".formatted(scores.stream().mapToDouble(Double::valueOf).sum()));
         doc.add(paragraph);
 
-
         for (int i = 0; i < subjects.size(); i++) {
             TestHistoryPDFGenerateDTO subject = subjects.get(i);
             Double score = scores.get(i);
@@ -90,5 +89,4 @@ public class GeneratePDF {
             table.addCell(cell);
         }
     }
-
 }

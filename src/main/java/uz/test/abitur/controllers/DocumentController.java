@@ -35,8 +35,8 @@ public class DocumentController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/download/{name:.*}")
     public ResponseEntity<InputStreamResource> download(@PathVariable String name) throws IOException {
-        File file = documentService.downloadFile(name);
         Document document = documentService.findByGeneratedName(name);
+        File file = documentService.downloadFile(name);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getOriginalName())

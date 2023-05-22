@@ -45,7 +45,7 @@ public class DocumentController {
                 .body(resource);
     }
 
-    @Operation(summary = "For AUTHENTICATED users, This API is used for get documents", responses = {
+    @Operation(summary = "For USERS , This API is used for get documents", responses = {
             @ApiResponse(responseCode = "200", description = "Document returned", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))})
     @GetMapping("/get/{id:.*}")

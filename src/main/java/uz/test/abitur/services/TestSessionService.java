@@ -38,14 +38,22 @@ public class TestSessionService {
         if (firstSubjectId == null && secondSubjectId == null && !withMandatory) {
             throw new RuntimeException("You should choose at least one subject");
         }
-        Subject firstSubject = subjectService.findById(firstSubjectId);
-        Subject secondSubject = subjectService.findById(secondSubjectId);
         List<Subject> mandatorySubjects = subjectService.getMandatorySubjects();
 
         TestSession testSession = new TestSession();
         testSession.setStartedAt(LocalDateTime.now());
         testSession.setFinishedAt(LocalDateTime.now());
         testSession.setUserId(sessionUser.id());
+        if (!Objects.isNull(firstSubjectId)) {
+            Subject firstSubject = subjectService.findById(firstSubjectId);
+            testSession.setFirstSubjectId(firstSubjectId);
+            testSession.setFinishedAt(testSession.getFinishedAt().plusHours(1));
+        }
+        if (!Objects.isNull(secondSubjectId)) {
+            Subject secondSubject = subjectService.findById(secondSubjectId);
+            testSession.setSecondSubjectId(secondSubjectId);
+            testSession.setFinishedAt(testSession.getFinishedAt().plusHours(1));
+        }
         if (withMandatory) {
             if (mandatorySubjects.size() == 3) {
                 testSession.setFinishedAt(testSession.getFinishedAt().plusHours(1));
@@ -55,14 +63,6 @@ public class TestSessionService {
             } else {
                 throw new RuntimeException("Error with mandatory subjects");
             }
-        }
-        if (!Objects.isNull(firstSubject)) {
-            testSession.setFirstSubjectId(firstSubjectId);
-            testSession.setFinishedAt(testSession.getFinishedAt().plusHours(1));
-        }
-        if (!Objects.isNull(secondSubject)) {
-            testSession.setSecondSubjectId(secondSubjectId);
-            testSession.setFinishedAt(testSession.getFinishedAt().plusHours(1));
         }
         testSessionRepository.save(testSession);
         applicationEventPublisher.publishEvent(new TestSessionCreatedEvent(testSession));

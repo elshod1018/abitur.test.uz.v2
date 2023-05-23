@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uz.test.abitur.config.security.SessionUser;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.dtos.ResponseDTO;
 import uz.test.abitur.dtos.auth.*;
@@ -28,6 +29,7 @@ import static uz.test.abitur.utils.UrlUtils.BASE_AUTH_URL;
 @PreAuthorize("isAnonymous()")
 public class AuthController {
     private final AuthUserService authUserService;
+    private final SessionUser sessionUser;
 
     @Operation(summary = "For ANONYM users ,This API is used for user registration", responses = {
             @ApiResponse(responseCode = "200", description = "User registered", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
@@ -44,6 +46,7 @@ public class AuthController {
     @PostMapping({"/access/token"})
     public ResponseEntity<ResponseDTO<TokenResponse>> generateToken(@Valid @RequestBody TokenRequest tokenRequest) {
         TokenResponse tokenResponse = authUserService.generateToken(tokenRequest);
+        tokenResponse.setRole(authUserService.findByPhoneNumber(tokenRequest.phoneNumber()).getRole());
         return ResponseEntity.ok(new ResponseDTO<>(tokenResponse));
     }
 

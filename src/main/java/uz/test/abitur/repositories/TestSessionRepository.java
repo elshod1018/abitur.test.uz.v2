@@ -10,6 +10,6 @@ public interface TestSessionRepository extends JpaRepository<TestSession, Intege
     @Query("select t from TestSession t where t.finished = false and t.finishedAt > NOW() and t.userId = ?1")
     TestSession findByUserId(String userId);
 
-    @Query("select t from TestSession t where t.id = ?1")
+    @Query("select t from TestSession t where t.finished = false and t.finishedAt > NOW() and t.id = ?1")
     Optional<TestSession> findTestSessionById(Integer id);
 }

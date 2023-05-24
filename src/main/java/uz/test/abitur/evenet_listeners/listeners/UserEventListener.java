@@ -1,6 +1,7 @@
 package uz.test.abitur.evenet_listeners.listeners;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import uz.test.abitur.services.TwilioService;
 
 import java.util.Objects;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserEventListener {
@@ -21,7 +23,7 @@ public class UserEventListener {
         String phoneNumber = event.getPhoneNumber();
         String smsCode = event.getSmsCode();
         if (!Objects.isNull(phoneNumber) && !Objects.isNull(smsCode)) {
-            System.out.println("Sms successfully send to: " + phoneNumber + " with code: " + smsCode);
+            log.info("Sms send to {}", phoneNumber);
 //            twilioService.sendSMS(phoneNumber, smsCode);
         }
     }

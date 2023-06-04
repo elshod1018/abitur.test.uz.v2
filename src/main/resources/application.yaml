@@ -23,6 +23,9 @@ jwt:
       expiry: 864000000 # 10 days
       secret:
         key: 7134743777217A25432A462D4A614E645267556B58703272357538782F413F44
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
 ---
 spring:
   config:

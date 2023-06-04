@@ -2,27 +2,18 @@ package uz.test.abitur.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.test.abitur.config.security.SessionUser;
 import uz.test.abitur.domains.Subject;
 import uz.test.abitur.domains.TestSession;
-import uz.test.abitur.dtos.subject.SubjectCreateDTO;
-import uz.test.abitur.dtos.subject.SubjectUpdateDTO;
 import uz.test.abitur.dtos.test.TestSessionCreateDTO;
 import uz.test.abitur.evenet_listeners.events.TestSessionCreatedEvent;
 import uz.test.abitur.evenet_listeners.events.TestSessionFinishedEvent;
-import uz.test.abitur.repositories.SubjectRepository;
 import uz.test.abitur.repositories.TestSessionRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
-import static uz.test.abitur.mapper.SubjectMapper.SUBJECT_MAPPER;
-
 @Service
 @RequiredArgsConstructor
 public class TestSessionService {

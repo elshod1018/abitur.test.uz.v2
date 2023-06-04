@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uz.test.abitur.config.security.SessionUser;
 import uz.test.abitur.domains.TestSession;
 import uz.test.abitur.dtos.ResponseDTO;
 import uz.test.abitur.dtos.test.SolveQuestionResultDTO;
@@ -36,6 +37,7 @@ public class TestController {
 
     private final TestSessionService testSessionService;
     private final SolveQuestionService solveQuestionService;
+    private final SessionUser sessionUser;
 
     @Operation(summary = "For USERS , This API is used for start test", responses = {
             @ApiResponse(responseCode = "200", description = "Test Started", content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
@@ -59,6 +61,9 @@ public class TestController {
     @PostMapping("/continue/{testSessionId:.*}")
     public ResponseEntity<ResponseDTO<TestSession>> continueTest(@PathVariable Integer testSessionId) {
         TestSession testSession = testSessionService.findById(testSessionId);
+        if (!testSession.getUserId().equals(sessionUser.id())) {
+            throw new RuntimeException("Test session not found with id '%s'".formatted(testSessionId));
+        }
         return ResponseEntity.ok(new ResponseDTO<>(testSession, "You can continue test"));
     }
 

@@ -7,8 +7,8 @@ import uz.test.abitur.dtos.question.QuestionCreateDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-19T08:42:34+0500",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.6 (Private Build)"
+    date = "2023-06-04T16:09:55+0500",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (Private Build)"
 )
 @Component
 public class QuestionMapperImpl implements QuestionMapper {

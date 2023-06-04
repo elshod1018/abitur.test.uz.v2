@@ -44,7 +44,7 @@ public class NewsService {
                 .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
     }
 
-    @CacheEvict(value = "news", key = "#id")
+    @CacheEvict(cacheNames = {"news", "newsList"}, allEntries = true, key = "#id")
     public void delete(Integer id) {
         News news = findById(id);
         news.setDeleted(true);

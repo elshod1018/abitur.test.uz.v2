@@ -1,6 +1,7 @@
 package uz.test.abitur.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,6 +12,8 @@ import uz.test.abitur.domains.News;
 import uz.test.abitur.dtos.news.NewsCreateDTO;
 import uz.test.abitur.dtos.news.NewsUpdateDTO;
 import uz.test.abitur.repositories.NewsRepository;
+
+import java.util.concurrent.TimeUnit;
 
 import static uz.test.abitur.mapper.NewsMapper.NEWS_MAPPER;
 
@@ -33,8 +36,10 @@ public class NewsService {
         return newsRepository.save(news);
     }
 
+    @SneakyThrows
     @Cacheable(value = "news", key = "#id")
     public News findById(Integer id) {
+        TimeUnit.SECONDS.sleep(3);
         return newsRepository.findNewsById(id)
                 .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
     }
